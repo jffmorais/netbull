@@ -1,0 +1,45 @@
+Cliente
+
+- nome
+- cpf
+- data nascimento
+- data criacao cadastro
+- email
+- telefone
+
+** (talvez) separacao de PF/PJ
+
+
+Endereço
+
+- logradouro
+- numero
+- complemento
+- bairro
+- cidade
+- estado
+- CEP
+- tipo (TRABALHO, RESIDENCIA, COBRANÇA)
+
+Cenário 1:  Cria Cliente
+	- Checar obrigatoriedade dos campos:
+		CPF, nome, email, telefone, endereço
+		
+Cenário 2: alterar endereço
+	- todos os campos (menos complemento) são obrigatorios
+	- passar o id do cliente
+	
+Cenário 3: cria endereço adicional
+	- checa se o limite de 3 endereços foi atingido
+	- passar o id do cliente
+	
+Cenário 4: deleta cliente e endereços
+	- passar o id do cliente
+	
+Cenário 5: deleta endereço
+	- passar o id do cliente
+	
+Cenário 6: listar clientes (paginado)
+
+Cenário 7: exibir cliente
+	- passar o id do cliente
