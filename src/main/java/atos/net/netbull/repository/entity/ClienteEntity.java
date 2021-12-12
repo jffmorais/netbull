@@ -1,7 +1,9 @@
 package atos.net.netbull.repository.entity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -9,16 +11,23 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "CLIENTE")
-public class ClienteEntity {
+public class ClienteEntity implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7410877415473388527L;
 
 	@Id
-	@Column(name = "ID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Column(name = "ID_CLIENTE")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
 	@Column(name = "NOME")
@@ -44,16 +53,11 @@ public class ClienteEntity {
 	@NotNull(message = "Campo telefone não pode ser nulo")
 	private String telefone;
 	
-	public ClienteEntity(String nome, String cpf, LocalDate dtNascimento, LocalDateTime dtCriacao, String email,
-			String telefone) {
-		super();
-		this.nome = nome;
-		this.cpf = cpf;
-		this.dtNascimento = dtNascimento;
-		this.dtCriacao = dtCriacao;
-		this.email = email;
-		this.telefone = telefone;
-	}
+	@OneToMany(mappedBy = "cliente")
+	@NotNull(message = "Deve-se adicionar ao menos um e no máximo três endereços")
+	@Size(min = 1, max = 3, message = "Deve-se adicionar ao menos um e no máximo três endereços")
+	private List<EnderecoEntity> endereco;
+	
 	public String getNome() {
 		return nome;
 	}
