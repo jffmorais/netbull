@@ -2,8 +2,11 @@ package atos.net.netbull.domain;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -28,6 +31,11 @@ public class ClienteVO {
 	
 	@NotNull(message = "Campo telefone não pode ser nulo")
 	private String telefone;
+	
+	@NotNull(message = "Campo Itens deve ter pelo menos um item")
+	@Size(min = 1, message = "Campo Endereco deve ter pelo menos um item")
+	@Valid
+	private List<EnderecoVO> itens;
 
 	public Long getId() {
 		return id;

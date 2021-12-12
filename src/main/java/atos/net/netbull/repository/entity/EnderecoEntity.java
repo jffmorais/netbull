@@ -1,6 +1,7 @@
 package atos.net.netbull.repository.entity;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -18,7 +19,9 @@ import atos.net.netbull.domain.TipoEnderecoEnum;
 @Table(name = "ENDERECO")
 public class EnderecoEntity {
 	
-	@Id
+
+	
+	@Id 
 	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -58,4 +61,107 @@ public class EnderecoEntity {
 	@NotNull(message = "Campo tipo não pode ser nulo")
 	@Enumerated(EnumType.STRING)
 	private TipoEnderecoEnum tipo;
+
+	public EnderecoEntity(Long id, ClienteEntity cliente,
+			@NotNull(message = "Campo logradouro não pode ser nulo") String logradouro,
+			@NotNull(message = "Campo numero não pode ser nulo") String numero, String complemento,
+			@NotNull(message = "Campo bairro não pode ser nulo") String bairro,
+			@NotNull(message = "Campo cidade não pode ser nulo") String cidade,
+			@NotNull(message = "Campo estado não pode ser nulo") String estado,
+			@NotNull(message = "Campo cep não pode ser nulo") String cep,
+			@NotNull(message = "Campo tipo não pode ser nulo") TipoEnderecoEnum tipo) {
+		super();
+		this.id = id;
+		this.cliente = cliente;
+		this.logradouro = logradouro;
+		this.numero = numero;
+		this.complemento = complemento;
+		this.bairro = bairro;
+		this.cidade = cidade;
+		this.estado = estado;
+		this.cep = cep;
+		this.tipo = tipo;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public ClienteEntity getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(ClienteEntity cliente) {
+		this.cliente = cliente;
+	}
+
+	public String getLogradouro() {
+		return logradouro;
+	}
+
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
+	}
+
+	public String getNumero() {
+		return numero;
+	}
+
+	public void setNumero(String numero) {
+		this.numero = numero;
+	}
+
+	public String getComplemento() {
+		return complemento;
+	}
+
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
+	}
+
+	public String getBairro() {
+		return bairro;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
+	public String getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(String cidade) {
+		this.cidade = cidade;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
+	public String getCep() {
+		return cep;
+	}
+
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
+
+	public TipoEnderecoEnum getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(TipoEnderecoEnum tipo) {
+		this.tipo = tipo;
+	}
+	
+	
 }

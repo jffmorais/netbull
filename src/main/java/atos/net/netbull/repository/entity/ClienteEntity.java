@@ -53,11 +53,29 @@ public class ClienteEntity implements Serializable {
 	@NotNull(message = "Campo telefone não pode ser nulo")
 	private String telefone;
 	
-	@OneToMany(mappedBy = "cliente")
+	@OneToMany(mappedBy = "endereco")
 	@NotNull(message = "Deve-se adicionar ao menos um e no máximo três endereços")
 	@Size(min = 1, max = 3, message = "Deve-se adicionar ao menos um e no máximo três endereços")
 	private List<EnderecoEntity> endereco;
 	
+	
+	
+	public ClienteEntity(Long id, @NotNull(message = "Campo nome não pode ser nulo") String nome,
+			@NotNull(message = "Campo cpf não pode ser nulo") String cpf,
+			@NotNull(message = "Campo data de nascimento não pode ser nulo") LocalDate dtNascimento,
+			LocalDateTime dtCriacao, @NotNull(message = "Campo email não pode ser nulo") String email,
+			@NotNull(message = "Campo telefone não pode ser nulo") String telefone,
+			@NotNull(message = "Deve-se adicionar ao menos um e no máximo três endereços") @Size(min = 1, max = 3, message = "Deve-se adicionar ao menos um e no máximo três endereços") List<EnderecoEntity> endereco) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.cpf = cpf;
+		this.dtNascimento = dtNascimento;
+		this.dtCriacao = dtCriacao;
+		this.email = email;
+		this.telefone = telefone;
+		this.endereco = endereco;
+	}
 	public String getNome() {
 		return nome;
 	}
