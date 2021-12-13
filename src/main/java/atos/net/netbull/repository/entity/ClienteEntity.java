@@ -7,17 +7,29 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import atos.net.netbull.domain.TipoClienteEnum;
+
 @Entity
 @Table(name = "CLIENTE")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="TIPO_CLIENTE", 
+	discriminatorType = DiscriminatorType.STRING)
 public class ClienteEntity implements Serializable {
 
 	/**
@@ -30,70 +42,28 @@ public class ClienteEntity implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@Column(name = "NOME")
-	@NotNull(message = "Campo nome não pode ser nulo")
-	private String nome;
-	
-	@Column(name = "CPF")
-	@NotNull(message = "Campo cpf não pode ser nulo")
-	private String cpf;
-	
-	@Column(name = "DT_NASCIMENTO")
-	@NotNull(message = "Campo data de nascimento não pode ser nulo")
-	private LocalDate dtNascimento;
+	@Column(name="TIPO_CLIENTE", insertable = false, updatable = false)
+	@NotNull(message = "Campo tipo de cliente não pode ser nulo")
+	@Enumerated(EnumType.STRING)
+	private TipoClienteEnum tipo;
 	
 	@Column(name = "DT_CRIACAO")
 	private LocalDateTime dtCriacao;
 	
 	@Column(name = "EMAIL")
 	@NotNull(message = "Campo email não pode ser nulo")
+	@Email(message = "Campo Email precisa ser válido")
 	private String email;
 	
 	@Column(name = "TELEFONE")
 	@NotNull(message = "Campo telefone não pode ser nulo")
 	private String telefone;
 	
-	@OneToMany(mappedBy = "endereco")
+	@OneToMany(mappedBy = "cliente")
 	@NotNull(message = "Deve-se adicionar ao menos um e no máximo três endereços")
 	@Size(min = 1, max = 3, message = "Deve-se adicionar ao menos um e no máximo três endereços")
 	private List<EnderecoEntity> endereco;
-	
-	
-	
-	public ClienteEntity(Long id, @NotNull(message = "Campo nome não pode ser nulo") String nome,
-			@NotNull(message = "Campo cpf não pode ser nulo") String cpf,
-			@NotNull(message = "Campo data de nascimento não pode ser nulo") LocalDate dtNascimento,
-			LocalDateTime dtCriacao, @NotNull(message = "Campo email não pode ser nulo") String email,
-			@NotNull(message = "Campo telefone não pode ser nulo") String telefone,
-			@NotNull(message = "Deve-se adicionar ao menos um e no máximo três endereços") @Size(min = 1, max = 3, message = "Deve-se adicionar ao menos um e no máximo três endereços") List<EnderecoEntity> endereco) {
-		super();
-		this.id = id;
-		this.nome = nome;
-		this.cpf = cpf;
-		this.dtNascimento = dtNascimento;
-		this.dtCriacao = dtCriacao;
-		this.email = email;
-		this.telefone = telefone;
-		this.endereco = endereco;
-	}
-	public String getNome() {
-		return nome;
-	}
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-	public String getCpf() {
-		return cpf;
-	}
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-	public LocalDate getDtNascimento() {
-		return dtNascimento;
-	}
-	public void setDtNascimento(LocalDate dtNascimento) {
-		this.dtNascimento = dtNascimento;
-	}
+
 	public LocalDateTime getDtCriacao() {
 		return dtCriacao;
 	}
@@ -113,6 +83,30 @@ public class ClienteEntity implements Serializable {
 		this.telefone = telefone;
 	}
 	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public TipoClienteEnum getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(TipoClienteEnum tipo) {
+		this.tipo = tipo;
+	}
+
+	public List<EnderecoEntity> getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(List<EnderecoEntity> endereco) {
+		this.endereco = endereco;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);

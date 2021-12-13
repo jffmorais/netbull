@@ -19,8 +19,6 @@ import atos.net.netbull.domain.TipoEnderecoEnum;
 @Table(name = "ENDERECO")
 public class EnderecoEntity {
 	
-
-	
 	@Id 
 	@Column(name = "ID")
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -61,27 +59,6 @@ public class EnderecoEntity {
 	@NotNull(message = "Campo tipo não pode ser nulo")
 	@Enumerated(EnumType.STRING)
 	private TipoEnderecoEnum tipo;
-
-	public EnderecoEntity(Long id, ClienteEntity cliente,
-			@NotNull(message = "Campo logradouro não pode ser nulo") String logradouro,
-			@NotNull(message = "Campo numero não pode ser nulo") String numero, String complemento,
-			@NotNull(message = "Campo bairro não pode ser nulo") String bairro,
-			@NotNull(message = "Campo cidade não pode ser nulo") String cidade,
-			@NotNull(message = "Campo estado não pode ser nulo") String estado,
-			@NotNull(message = "Campo cep não pode ser nulo") String cep,
-			@NotNull(message = "Campo tipo não pode ser nulo") TipoEnderecoEnum tipo) {
-		super();
-		this.id = id;
-		this.cliente = cliente;
-		this.logradouro = logradouro;
-		this.numero = numero;
-		this.complemento = complemento;
-		this.bairro = bairro;
-		this.cidade = cidade;
-		this.estado = estado;
-		this.cep = cep;
-		this.tipo = tipo;
-	}
 
 	public Long getId() {
 		return id;
