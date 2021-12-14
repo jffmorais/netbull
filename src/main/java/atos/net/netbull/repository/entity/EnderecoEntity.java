@@ -1,5 +1,7 @@
 package atos.net.netbull.repository.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -17,18 +19,16 @@ import atos.net.netbull.domain.TipoEnderecoEnum;
 
 @Entity
 @Table(name = "ENDERECO")
-public class EnderecoEntity {
+public class EnderecoEntity implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+	
+	@EmbeddedId
+	private EnderecoPK id;
+	
+	
 	
 
-	
-	@Id 
-	@Column(name = "ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-	
-	@ManyToOne
-	@JoinColumn(name="ID_CLIENTE")
-	private ClienteEntity cliente;
 
 	@Column(name = "LOGRADOURO")
 	@NotNull(message = "Campo logradouro não pode ser nulo")
@@ -36,7 +36,7 @@ public class EnderecoEntity {
 	
 	@Column(name = "NUMERO")
 	@NotNull(message = "Campo numero não pode ser nulo")
-	private String numero;
+	private int numero;
 	
 	@Column(name = "COMPLEMENTO")
 	private String complemento;
@@ -62,41 +62,21 @@ public class EnderecoEntity {
 	@Enumerated(EnumType.STRING)
 	private TipoEnderecoEnum tipo;
 
-	public EnderecoEntity(Long id, ClienteEntity cliente,
-			@NotNull(message = "Campo logradouro não pode ser nulo") String logradouro,
-			@NotNull(message = "Campo numero não pode ser nulo") String numero, String complemento,
-			@NotNull(message = "Campo bairro não pode ser nulo") String bairro,
-			@NotNull(message = "Campo cidade não pode ser nulo") String cidade,
-			@NotNull(message = "Campo estado não pode ser nulo") String estado,
-			@NotNull(message = "Campo cep não pode ser nulo") String cep,
-			@NotNull(message = "Campo tipo não pode ser nulo") TipoEnderecoEnum tipo) {
-		super();
-		this.id = id;
-		this.cliente = cliente;
-		this.logradouro = logradouro;
-		this.numero = numero;
-		this.complemento = complemento;
-		this.bairro = bairro;
-		this.cidade = cidade;
-		this.estado = estado;
-		this.cep = cep;
-		this.tipo = tipo;
-	}
+	
+	
+	
+	
 
-	public Long getId() {
+	
+
+
+
+	public EnderecoPK getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(EnderecoPK id) {
 		this.id = id;
-	}
-
-	public ClienteEntity getCliente() {
-		return cliente;
-	}
-
-	public void setCliente(ClienteEntity cliente) {
-		this.cliente = cliente;
 	}
 
 	public String getLogradouro() {
@@ -107,11 +87,11 @@ public class EnderecoEntity {
 		this.logradouro = logradouro;
 	}
 
-	public String getNumero() {
+	public int getNumero() {
 		return numero;
 	}
 
-	public void setNumero(String numero) {
+	public void setNumero(int numero) {
 		this.numero = numero;
 	}
 

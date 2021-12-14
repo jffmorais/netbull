@@ -2,7 +2,9 @@ package atos.net.netbull.domain;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -11,6 +13,8 @@ import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class ClienteVO {
+
+
 
 	private Long id;
 
@@ -35,8 +39,12 @@ public class ClienteVO {
 	@NotNull(message = "Campo Itens deve ter pelo menos um item")
 	@Size(min = 1, message = "Campo Endereco deve ter pelo menos um item")
 	@Valid
-	private List<EnderecoVO> itens;
+	private List<EnderecoVO> Enderecos;
+	
 
+	
+
+	
 	public Long getId() {
 		return id;
 	}
@@ -92,6 +100,54 @@ public class ClienteVO {
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
 	}
+
+	public List<EnderecoVO> getEnderecos() {
+		return Enderecos;
+	}
+
+	public void setEnderecos(List<EnderecoVO> enderecos) {
+		Enderecos = enderecos;
+	}
+
+	public void add(EnderecoVO endereco) {
+		List<EnderecoVO> enderecosLocal = 
+				Optional.ofNullable(this.getEnderecos()).orElseGet(()->new ArrayList());		
+		enderecosLocal.add(endereco);
+		
+		this.Enderecos = enderecosLocal;
+		
+	}
 	
 	
 }
+
+//public ClienteVO(Long id, @NotNull(message = "Campo nome não pode ser nulo") String nome,
+//@NotNull(message = "Campo cpf não pode ser nulo") String cpf,
+//@NotNull(message = "Campo data de nascimento não pode ser nulo") LocalDate dtNascimento,
+//LocalDateTime dtCriacao, @NotNull(message = "Campo email não pode ser nulo") String email,
+//@NotNull(message = "Campo telefone não pode ser nulo") String telefone) {
+//super();
+//this.id = id;
+//this.nome = nome;
+//this.cpf = cpf;
+//this.dtNascimento = dtNascimento;
+//this.dtCriacao = dtCriacao;
+//this.email = email;
+//this.telefone = telefone;
+//}
+
+//public ClienteVO(ClienteEntity entity) {
+//
+//this.id =entity.getId();
+//this.nome = entity.getNome();
+//this.cpf = entity.getCpf();
+//this.dtNascimento = entity.getDtNascimento();
+//this.dtCriacao = entity.getDtCriacao();
+//this.email = entity.getEmail();
+//this.telefone = entity.getTelefone();
+//}
+
+//public ClienteVO(ClienteEntity entity, Set<EnderecoEntity> enderecos) {
+//this(entity);
+//enderecos.forEach(end -> this.Enderecos.add(new EnderecoVO(end)));
+//}

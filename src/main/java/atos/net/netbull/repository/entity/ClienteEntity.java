@@ -3,15 +3,20 @@ package atos.net.netbull.repository.entity;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -27,7 +32,10 @@ public class ClienteEntity implements Serializable {
 
 	@Id
 	@Column(name = "ID_CLIENTE")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(name = "sq_cli",sequenceName = "sequence_cli",
+    allocationSize = 1,
+    initialValue = 1)
 	private Long id;
 	
 	@Column(name = "NOME")
@@ -53,29 +61,36 @@ public class ClienteEntity implements Serializable {
 	@NotNull(message = "Campo telefone não pode ser nulo")
 	private String telefone;
 	
-	@OneToMany(mappedBy = "endereco")
+	@OneToMany(mappedBy = "id.cliente", cascade = CascadeType.ALL)
 	@NotNull(message = "Deve-se adicionar ao menos um e no máximo três endereços")
 	@Size(min = 1, max = 3, message = "Deve-se adicionar ao menos um e no máximo três endereços")
-	private List<EnderecoEntity> endereco;
+	private List<EnderecoEntity> enderecos;
 	
 	
 	
-	public ClienteEntity(Long id, @NotNull(message = "Campo nome não pode ser nulo") String nome,
-			@NotNull(message = "Campo cpf não pode ser nulo") String cpf,
-			@NotNull(message = "Campo data de nascimento não pode ser nulo") LocalDate dtNascimento,
-			LocalDateTime dtCriacao, @NotNull(message = "Campo email não pode ser nulo") String email,
-			@NotNull(message = "Campo telefone não pode ser nulo") String telefone,
-			@NotNull(message = "Deve-se adicionar ao menos um e no máximo três endereços") @Size(min = 1, max = 3, message = "Deve-se adicionar ao menos um e no máximo três endereços") List<EnderecoEntity> endereco) {
-		super();
-		this.id = id;
-		this.nome = nome;
-		this.cpf = cpf;
-		this.dtNascimento = dtNascimento;
-		this.dtCriacao = dtCriacao;
-		this.email = email;
-		this.telefone = telefone;
-		this.endereco = endereco;
+
+	
+
+	public List<EnderecoEntity> getEnderecos() {
+		return enderecos;
 	}
+
+
+	public void setEnderecos(List<EnderecoEntity> enderecos) {
+		this.enderecos = enderecos;
+	}
+
+
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
 	public String getNome() {
 		return nome;
 	}
@@ -128,5 +143,33 @@ public class ClienteEntity implements Serializable {
 		ClienteEntity other = (ClienteEntity) obj;
 		return Objects.equals(id, other.id);
 	}
+
+
+	public void add(EnderecoEntity endereco) {
+		List<EnderecoEntity> enderecosLocal = 
+				Optional.ofNullable(this.getEnderecos()).orElseGet(()->new ArrayList());		
+		enderecosLocal.add(endereco);
+		
+		this.enderecos = enderecosLocal; 
+	}
 	
 }
+
+
+
+//public ClienteEntity(Long id, @NotNull(message = "Campo nome não pode ser nulo") String nome,
+//@NotNull(message = "Campo cpf não pode ser nulo") String cpf,
+//@NotNull(message = "Campo data de nascimento não pode ser nulo") LocalDate dtNascimento,
+//LocalDateTime dtCriacao, @NotNull(message = "Campo email não pode ser nulo") String email,
+//@NotNull(message = "Campo telefone não pode ser nulo") String telefone
+//) {
+//super();
+//this.id = id;
+//this.nome = nome;
+//this.cpf = cpf;
+//this.dtNascimento = dtNascimento;
+//this.dtCriacao = dtCriacao;
+//this.email = email;
+//this.telefone = telefone;
+//
+//}
