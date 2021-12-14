@@ -2,7 +2,9 @@ package atos.net.netbull.domain;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
@@ -43,10 +45,10 @@ public class ClienteVO {
 	@NotNull(message = "Campo telefone não pode ser nulo", groups = {PessoaFisicaInfo.class, PessoaJuridicaInfo.class})
 	private String telefone;
 	
-	@NotNull(message = "Campo Itens deve ter pelo menos um item", groups = {PessoaFisicaInfo.class, PessoaJuridicaInfo.class})
-	@Size(min = 1, message = "Campo Endereco deve ter pelo menos um item", groups = {PessoaFisicaInfo.class, PessoaJuridicaInfo.class})
+	@NotNull(message = "Campo Endereço não pode ser nulo", groups = {PessoaFisicaInfo.class, PessoaJuridicaInfo.class})
+	@Size(min = 1, max = 3, message = "Deve-se adicionar ao menos um e no máximo três endereços", groups = {PessoaFisicaInfo.class, PessoaJuridicaInfo.class})
 	@Valid
-	private List<EnderecoVO> itens;
+	private List<EnderecoVO> enderecos;
 
 	public Long getId() {
 		return id;
@@ -120,11 +122,22 @@ public class ClienteVO {
 		this.telefone = telefone;
 	}
 
-	public List<EnderecoVO> getItens() {
-		return itens;
+	public TipoClienteEnum getTipo() {
+		return tipo;
 	}
 
-	public void setItens(List<EnderecoVO> itens) {
-		this.itens = itens;
+	public void setTipo(TipoClienteEnum tipo) {
+		this.tipo = tipo;
+	}
+
+	public List<EnderecoVO> getEnderecos() {
+		return enderecos;
+	}
+
+	public void addEndereco(EnderecoVO endereco) {
+		List<EnderecoVO> enderecosList =
+				Optional.ofNullable(this.getEnderecos()).orElseGet(()->new ArrayList());
+		enderecosList.add(endereco);
+		this.enderecos = enderecosList;
 	}
 }
