@@ -27,7 +27,7 @@ public class EnderecoVO {
 	private String estado;
 	
 	@NotNull(message = "Campo CEP não pode ser nulo")
-	private String CEP;
+	private String cep;
 	
 	@NotNull(message="Tipo não pode ser nulo")
 	private TipoEnderecoEnum tipo; 
@@ -98,53 +98,13 @@ public class EnderecoVO {
 		this.estado = estado;
 	}
 
-	public String getCEP() {
-		return CEP;
+	public String getCep() {
+		return cep;
 	}
 
-	public void setCEP(String CEP) {
-		CEP = CEP;
+	public void setCep(String cep) {
+		this.cep = cep;
 	}
 	
 	
 }
-
-
-
-
-
-
-
-
-//public EnderecoVO(Long id, @NotNull(message = "Campo logradouro não pode ser nulo") String logradouro,
-//@NotNull(message = "Campo numero não pode ser nulo") int numero, String complemento,
-//@NotNull(message = "Campo bairro não pode ser nulo") String bairro,
-//@NotNull(message = "Campo cidade não pode ser nulo") String cidade,
-//@NotNull(message = "Campo estado não pode ser nulo") String estado,
-//@NotNull(message = "Campo CEP não pode ser nulo") String cEP,
-//@NotNull(message = "Tipo não pode ser nulo") TipoEnderecoEnum tipo) {
-//super();
-//this.id = id;
-//this.logradouro = logradouro;
-//this.numero = numero;
-//this.complemento = complemento;
-//this.bairro = bairro;
-//this.cidade = cidade;
-//this.estado = estado;
-//CEP = cEP;
-//this.tipo = tipo;
-//}
-//
-//public EnderecoVO(EnderecoEntity entity) {
-//
-//this.id = entity.getId();
-//this.logradouro = entity.getLogradouro();
-//this.numero = entity.getNumero();
-//this.complemento = entity.getComplemento();
-//this.bairro = entity.getBairro();
-//this.cidade = entity.getCidade();
-//this.estado = entity.getEstado();
-//this.CEP = entity.getCep();
-//this.tipo = entity.getTipo();
-//
-//}

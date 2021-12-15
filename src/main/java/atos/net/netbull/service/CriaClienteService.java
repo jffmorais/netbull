@@ -1,16 +1,16 @@
 package atos.net.netbull.service;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
-import javax.ws.rs.NotFoundException;
 
 import org.springframework.stereotype.Service;
 
 import atos.net.netbull.domain.ClienteVO;
+import atos.net.netbull.factory.ClienteFactory;
 import atos.net.netbull.repository.ClienteRepository;
 import atos.net.netbull.repository.entity.ClienteEntity;
 
@@ -26,12 +26,23 @@ public class CriaClienteService {
 		this.repository = r;
 	}
 	
-	public void persistir(ClienteVO cliente) {
+	public ClienteVO persistir(ClienteVO cliente) {
 		Set<ConstraintViolation<ClienteVO>> validateMessages = this.validator.validate(cliente);
 		
 		if(!validateMessages.isEmpty()) {
 			throw new ConstraintViolationException("Cliente Inválido", validateMessages);
 		}
+		
+		cliente.setDtCriacao(LocalDateTime.now());
+		
+		ClienteEntity clienteEntity = new ClienteFactory(cliente).toEntity();
+		
+		clienteEntity = repository.save(clienteEntity);
+		
+		
+		
+		
+		return  new ClienteFactory(clienteEntity).toVO(); 
 	}
 
 //	public ClienteVO findById(long id) {

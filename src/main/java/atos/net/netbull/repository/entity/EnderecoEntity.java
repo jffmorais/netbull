@@ -28,8 +28,10 @@ public class EnderecoEntity implements Serializable{
 	
 	
 	
-
-
+//	@Column(name = "CD_ENDERECO")
+//	//@NotNull(message = "Campo Codigo endereco não pode ser nulo")
+//	private Integer codigoEndereco;
+	
 	@Column(name = "LOGRADOURO")
 	@NotNull(message = "Campo logradouro não pode ser nulo")
 	private String logradouro;
@@ -61,15 +63,6 @@ public class EnderecoEntity implements Serializable{
 	@NotNull(message = "Campo tipo não pode ser nulo")
 	@Enumerated(EnumType.STRING)
 	private TipoEnderecoEnum tipo;
-
-	
-	
-	
-	
-
-	
-
-
 
 	public EnderecoPK getId() {
 		return id;
@@ -142,6 +135,21 @@ public class EnderecoEntity implements Serializable{
 	public void setTipo(TipoEnderecoEnum tipo) {
 		this.tipo = tipo;
 	}
+
+	@Override
+	public String toString() {
+		return "EnderecoEntity [id=" + id + ", logradouro=" + logradouro + ", numero=" + numero + ", complemento="
+				+ complemento + ", bairro=" + bairro + ", cidade=" + cidade + ", estado=" + estado + ", cep=" + cep
+				+ ", tipo=" + tipo + "]";
+	}
+
+//	public Integer getCodigoEndereco() {
+//		return codigoEndereco;
+//	}
+//
+//	public void setCodigoEndereco(Integer codigoEndereco) {
+//		this.codigoEndereco = codigoEndereco;
+//	}
 	
 	
 }

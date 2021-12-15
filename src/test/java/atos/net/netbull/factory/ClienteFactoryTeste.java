@@ -41,7 +41,7 @@ public class ClienteFactoryTeste {
 		endereco.setComplemento("Masp");
 		endereco.setBairro("Bela vista");
 		endereco.setEstado("São Paulo");
-		endereco.setCEP("01311-000");
+		endereco.setCep("01311-000");
 		endereco.setTipo(TipoEnderecoEnum.RESIDENCIA);
 		cliente.add(endereco);
 		
@@ -74,7 +74,7 @@ public class ClienteFactoryTeste {
 		assertEquals(cliente.getEnderecos().get(0).getComplemento(),entityCriado.getEnderecos().get(0).getComplemento());
 		assertEquals(cliente.getEnderecos().get(0).getBairro(),entityCriado.getEnderecos().get(0).getBairro());
 		assertEquals(cliente.getEnderecos().get(0).getEstado(),entityCriado.getEnderecos().get(0).getEstado());
-		assertEquals(cliente.getEnderecos().get(0).getCEP(),entityCriado.getEnderecos().get(0).getCep());
+		assertEquals(cliente.getEnderecos().get(0).getCep(),entityCriado.getEnderecos().get(0).getCep());
 		assertEquals(cliente.getEnderecos().get(0).getTipo(),entityCriado.getEnderecos().get(0).getTipo());
 		
 		
@@ -104,7 +104,7 @@ public class ClienteFactoryTeste {
 		assertEquals(cliente.getEnderecos().get(0).getComplemento(),voCriado.getEnderecos().get(0).getComplemento());
 		assertEquals(cliente.getEnderecos().get(0).getBairro(),voCriado.getEnderecos().get(0).getBairro());
 		assertEquals(cliente.getEnderecos().get(0).getEstado(),voCriado.getEnderecos().get(0).getEstado());
-		assertEquals(cliente.getEnderecos().get(0).getCEP(),voCriado.getEnderecos().get(0).getCEP());
+		assertEquals(cliente.getEnderecos().get(0).getCep(),voCriado.getEnderecos().get(0).getCep());
 		assertEquals(cliente.getEnderecos().get(0).getTipo(),voCriado.getEnderecos().get(0).getTipo());
 	}
 }

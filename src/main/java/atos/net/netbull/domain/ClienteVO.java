@@ -25,7 +25,7 @@ public class ClienteVO {
 	private String cpf;
 	
 	@NotNull(message = "Campo data de nascimento não pode ser nulo")
-	@JsonFormat(pattern="dd/MM/yyyy")
+	//@JsonFormat(pattern="dd/MM/yyyy")
 	private LocalDate dtNascimento;
 	
 	private LocalDateTime dtCriacao;
@@ -120,34 +120,3 @@ public class ClienteVO {
 	
 	
 }
-
-//public ClienteVO(Long id, @NotNull(message = "Campo nome não pode ser nulo") String nome,
-//@NotNull(message = "Campo cpf não pode ser nulo") String cpf,
-//@NotNull(message = "Campo data de nascimento não pode ser nulo") LocalDate dtNascimento,
-//LocalDateTime dtCriacao, @NotNull(message = "Campo email não pode ser nulo") String email,
-//@NotNull(message = "Campo telefone não pode ser nulo") String telefone) {
-//super();
-//this.id = id;
-//this.nome = nome;
-//this.cpf = cpf;
-//this.dtNascimento = dtNascimento;
-//this.dtCriacao = dtCriacao;
-//this.email = email;
-//this.telefone = telefone;
-//}
-
-//public ClienteVO(ClienteEntity entity) {
-//
-//this.id =entity.getId();
-//this.nome = entity.getNome();
-//this.cpf = entity.getCpf();
-//this.dtNascimento = entity.getDtNascimento();
-//this.dtCriacao = entity.getDtCriacao();
-//this.email = entity.getEmail();
-//this.telefone = entity.getTelefone();
-//}
-
-//public ClienteVO(ClienteEntity entity, Set<EnderecoEntity> enderecos) {
-//this(entity);
-//enderecos.forEach(end -> this.Enderecos.add(new EnderecoVO(end)));
-//}

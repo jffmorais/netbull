@@ -1,6 +1,7 @@
 package atos.net.netbull.repository.entity;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,7 +15,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -32,7 +32,7 @@ public class ClienteEntity implements Serializable {
 
 	@Id
 	@Column(name = "ID_CLIENTE")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)//, generator = "sq_cli")
 	@SequenceGenerator(name = "sq_cli",sequenceName = "sequence_cli",
     allocationSize = 1,
     initialValue = 1)
@@ -65,10 +65,6 @@ public class ClienteEntity implements Serializable {
 	@NotNull(message = "Deve-se adicionar ao menos um e no máximo três endereços")
 	@Size(min = 1, max = 3, message = "Deve-se adicionar ao menos um e no máximo três endereços")
 	private List<EnderecoEntity> enderecos;
-	
-	
-	
-
 	
 
 	public List<EnderecoEntity> getEnderecos() {
@@ -106,7 +102,7 @@ public class ClienteEntity implements Serializable {
 	public LocalDate getDtNascimento() {
 		return dtNascimento;
 	}
-	public void setDtNascimento(LocalDate dtNascimento) {
+	public void setDtNascimento( LocalDate dtNascimento) {
 		this.dtNascimento = dtNascimento;
 	}
 	public LocalDateTime getDtCriacao() {
@@ -152,24 +148,16 @@ public class ClienteEntity implements Serializable {
 		
 		this.enderecos = enderecosLocal; 
 	}
+
+
+	@Override
+	public String toString() {
+		return "ClienteEntity [id=" + id + ", nome=" + nome + ", cpf=" + cpf + ", dtNascimento=" + dtNascimento
+				+ ", dtCriacao=" + dtCriacao + ", email=" + email + ", telefone=" + telefone + ", enderecos="
+				+ enderecos + "]";
+	}
 	
 }
 
 
 
-//public ClienteEntity(Long id, @NotNull(message = "Campo nome não pode ser nulo") String nome,
-//@NotNull(message = "Campo cpf não pode ser nulo") String cpf,
-//@NotNull(message = "Campo data de nascimento não pode ser nulo") LocalDate dtNascimento,
-//LocalDateTime dtCriacao, @NotNull(message = "Campo email não pode ser nulo") String email,
-//@NotNull(message = "Campo telefone não pode ser nulo") String telefone
-//) {
-//super();
-//this.id = id;
-//this.nome = nome;
-//this.cpf = cpf;
-//this.dtNascimento = dtNascimento;
-//this.dtCriacao = dtCriacao;
-//this.email = email;
-//this.telefone = telefone;
-//
-//}

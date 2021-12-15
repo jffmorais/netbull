@@ -25,6 +25,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import atos.net.netbull.domain.ClienteVO;
 import atos.net.netbull.repository.ClienteRepository;
 import atos.net.netbull.repository.entity.ClienteEntity;
 
@@ -64,7 +65,7 @@ public class BuscaClienteServiceTeste {
 		when(clienteRepository.findById(anyLong()))
 				.thenReturn(Optional.of(clienteEntityTreinado));
 		
-		ClienteEntity notaFiscalVendaEntityRetornado = buscaClienteService.porId(3l);
+		ClienteVO notaFiscalVendaEntityRetornado = buscaClienteService.porId(3l);
 		
 		then(clienteRepository).should(times(1)).findById(anyLong());
 		

@@ -55,7 +55,7 @@ public class ClienteFactory {
 		enderecoVO.setBairro( endereco.getBairro());
 		enderecoVO.setCidade( endereco.getCidade());
 		enderecoVO.setEstado(endereco.getEstado());
-		enderecoVO.setCEP( endereco.getCep());
+		enderecoVO.setCep( endereco.getCep());
 		enderecoVO.setTipo( endereco.getTipo());
 		
 		cliVO.add(enderecoVO);
@@ -92,7 +92,7 @@ public class ClienteFactory {
 		enderecoEntity.setNumero(endereco.getNumero());
 		enderecoEntity.setBairro(endereco.getBairro());
 		enderecoEntity.setCidade(endereco.getCidade());
-		enderecoEntity.setCep(endereco.getCEP());
+		enderecoEntity.setCep(endereco.getCep());
 		enderecoEntity.setEstado(endereco.getEstado());
 		enderecoEntity.setTipo(endereco.getTipo());
 		enderecoEntity.setBairro(endereco.getBairro());
