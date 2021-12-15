@@ -108,11 +108,11 @@ class CriaClientePessoaFisicaServiceTest {
 		
 		EnderecoVO endereco = new EnderecoVO();
 		endereco.setLogradouro("Rua Genérica");
-		endereco.setNumero(1526);
+		endereco.setNumero("1526");
 		endereco.setBairro("Jardim Genérico");
 		endereco.setCidade("Cidade Genérica");
 		endereco.setEstado("SP");
-		endereco.setCEP("15253012");
+		endereco.setCep("15253012");
 		
 		cliente.addEndereco(endereco);
 		
@@ -139,11 +139,11 @@ class CriaClientePessoaFisicaServiceTest {
 		
 		EnderecoVO endereco = new EnderecoVO();
 		endereco.setLogradouro("Rua Genérica");
-		endereco.setNumero(1526);
+		endereco.setNumero("1526");
 		endereco.setBairro("Jardim Genérico");
 		endereco.setCidade("Cidade Genérica");
 		endereco.setEstado("SP");
-		endereco.setCEP("15253012");
+		endereco.setCep("15253012");
 		
 		cliente.addEndereco(endereco);
 		
@@ -200,11 +200,11 @@ class CriaClientePessoaFisicaServiceTest {
 		
 		EnderecoVO endereco = new EnderecoVO();
 		endereco.setLogradouro("Rua Genérica");
-		endereco.setNumero(1526);
+		endereco.setNumero("1526");
 		endereco.setBairro("Jardim Genérico");
 		endereco.setCidade("Cidade Genérica");
 		endereco.setEstado("SP");
-		endereco.setCEP("15253012");
+		endereco.setCep("15253012");
 		
 		cliente.addEndereco(endereco);
 		
@@ -236,11 +236,11 @@ class CriaClientePessoaFisicaServiceTest {
 		
 		EnderecoVO endereco = new EnderecoVO();
 		endereco.setLogradouro("Rua Genérica");
-		endereco.setNumero(1526);
+		endereco.setNumero("1526");
 		endereco.setBairro("Jardim Genérico");
 		endereco.setCidade("Cidade Genérica");
 		endereco.setEstado("SP");
-		endereco.setCEP("15253012");
+		endereco.setCep("15253012");
 		
 		cliente.addEndereco(endereco);
 		
@@ -251,7 +251,7 @@ class CriaClientePessoaFisicaServiceTest {
 	}
 	
 	@Test
-	@DisplayName("Testa cliente criado")
+	@DisplayName("Testa persistencia do cliente")
 	void test_quando_Clinte_criadoo() {
 		
 		assertNotNull(criaClienteServ);
@@ -267,17 +267,17 @@ class CriaClientePessoaFisicaServiceTest {
 		
 		EnderecoVO endereco = new EnderecoVO();
 		endereco.setLogradouro("Rua Genérica");
-		endereco.setNumero(1526);
+		endereco.setNumero("1526");
 		endereco.setBairro("Jardim Genérico");
 		endereco.setCidade("Cidade Genérica");
 		endereco.setEstado("SP");
-		endereco.setCEP("15253012");
+		endereco.setCep("15253012");
 		
 		cliente.addEndereco(endereco);
 		
-		//when(this.clienteRepo)
+		ClienteVO clienteCriado = criaClienteServ.persistir(cliente);
 		
-		
+		assertNotNull(clienteCriado);
 	}
 
 }

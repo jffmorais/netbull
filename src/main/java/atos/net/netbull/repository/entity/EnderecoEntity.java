@@ -1,5 +1,7 @@
 package atos.net.netbull.repository.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -17,16 +19,15 @@ import atos.net.netbull.domain.TipoEnderecoEnum;
 
 @Entity
 @Table(name = "ENDERECO")
-public class EnderecoEntity {
+public class EnderecoEntity implements Serializable {
 	
-	@Id 
-	@Column(name = "ID")
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-	
-	@ManyToOne
-	@JoinColumn(name="ID_CLIENTE")
-	private ClienteEntity cliente;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@EmbeddedId
+	private EnderecoPK id;
 
 	@Column(name = "LOGRADOURO")
 	@NotNull(message = "Campo logradouro não pode ser nulo")
@@ -59,22 +60,6 @@ public class EnderecoEntity {
 	@NotNull(message = "Campo tipo não pode ser nulo")
 	@Enumerated(EnumType.STRING)
 	private TipoEnderecoEnum tipo;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public ClienteEntity getCliente() {
-		return cliente;
-	}
-
-	public void setCliente(ClienteEntity cliente) {
-		this.cliente = cliente;
-	}
 
 	public String getLogradouro() {
 		return logradouro;
@@ -138,6 +123,14 @@ public class EnderecoEntity {
 
 	public void setTipo(TipoEnderecoEnum tipo) {
 		this.tipo = tipo;
+	}
+
+	public EnderecoPK getId() {
+		return id;
+	}
+
+	public void setId(EnderecoPK id) {
+		this.id = id;
 	}
 	
 	

@@ -15,8 +15,10 @@ import org.springframework.stereotype.Service;
 import atos.net.netbull.domain.ClienteVO;
 import atos.net.netbull.domain.PessoaFisicaInfo;
 import atos.net.netbull.repository.ClientePessoaFisicaRepository;
+import atos.net.netbull.repository.entity.ClientePessoaFisicaEntity;
 import atos.net.netbull.util.ValidaDocumentos;
 import atos.net.netbull.util.ValidaTelefone;
+import factory.ClientePessoaFisicaFactory;
 
 @Service
 public class CriaClientePessoaFisicaService {
@@ -30,7 +32,7 @@ public class CriaClientePessoaFisicaService {
 		this.clienteRepo = clienteRepo;
 	}
 	
-	public void persistir(@NotNull ClienteVO cliente) {
+	public ClienteVO persistir(@NotNull ClienteVO cliente) {
 		
 		Set<ConstraintViolation<ClienteVO>> validateMessages = this.validador.validate(cliente, PessoaFisicaInfo.class);
 		
@@ -50,10 +52,16 @@ public class CriaClientePessoaFisicaService {
 		}
 		
 		ValidaTelefone validaTel = new ValidaTelefone();
+		
 		if(!validaTel.telefoneValido(cliente.getTelefone())) {
 			throw new BadRequestException("O telefone informado não é válido");
 		}
 		
+		ClientePessoaFisicaEntity clienteEntity = new ClientePessoaFisicaFactory(cliente).toEntity();
+		
+		this.clienteRepo.save(clienteEntity);
+		
+		return cliente;
 	}
 
 }

@@ -3,9 +3,12 @@ package atos.net.netbull.repository.entity;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
@@ -18,6 +21,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -39,7 +43,10 @@ public class ClienteEntity implements Serializable {
 
 	@Id
 	@Column(name = "ID_CLIENTE")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(name = "sq_cli",sequenceName = "sequence_cli",
+    allocationSize = 1,
+    initialValue = 1)
 	private Long id;
 	
 	@Column(name="TIPO_CLIENTE", insertable = false, updatable = false)
@@ -59,10 +66,10 @@ public class ClienteEntity implements Serializable {
 	@NotNull(message = "Campo telefone não pode ser nulo")
 	private String telefone;
 	
-	@OneToMany(mappedBy = "cliente")
+	@OneToMany(mappedBy = "id.cliente", cascade = CascadeType.ALL)
 	@NotNull(message = "Deve-se adicionar ao menos um e no máximo três endereços")
 	@Size(min = 1, max = 3, message = "Deve-se adicionar ao menos um e no máximo três endereços")
-	private List<EnderecoEntity> endereco;
+	private List<EnderecoEntity> enderecos;
 
 	public LocalDateTime getDtCriacao() {
 		return dtCriacao;
@@ -99,12 +106,12 @@ public class ClienteEntity implements Serializable {
 		this.tipo = tipo;
 	}
 
-	public List<EnderecoEntity> getEndereco() {
-		return endereco;
+	public List<EnderecoEntity> getEnderecos() {
+		return enderecos;
 	}
 
 	public void setEndereco(List<EnderecoEntity> endereco) {
-		this.endereco = endereco;
+		this.enderecos = endereco;
 	}
 
 	@Override
@@ -121,6 +128,14 @@ public class ClienteEntity implements Serializable {
 			return false;
 		ClienteEntity other = (ClienteEntity) obj;
 		return Objects.equals(id, other.id);
+	}
+	
+	public void add(EnderecoEntity endereco) {
+		List<EnderecoEntity> enderecosLocal = 
+				Optional.ofNullable(this.getEnderecos()).orElseGet(()->new ArrayList());		
+		enderecosLocal.add(endereco);
+		
+		this.enderecos = enderecosLocal; 
 	}
 	
 }

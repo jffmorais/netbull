@@ -7,25 +7,38 @@ public class EnderecoVO {
 	
 	private Long id;
 	
-	@NotNull(message = "Campo logradouro não pode ser nulo")
+	@NotNull(message = "Campo logradouro não pode ser nulo", groups = EnderecoInfo.class)
 	private String logradouro;
 	
-	@NotNull(message = "Campo numero não pode ser nulo")
-	private int numero;	
+	@NotNull(message = "Campo numero não pode ser nulo", groups = EnderecoInfo.class)
+	private String numero;	
 	
 	private String complemento;
 	
-	@NotNull(message = "Campo bairro não pode ser nulo")
+	@NotNull(message = "Campo bairro não pode ser nulo", groups = EnderecoInfo.class)
 	private String bairro;
 	
-	@NotNull(message = "Campo cidade não pode ser nulo")
+	@NotNull(message = "Campo cidade não pode ser nulo", groups = EnderecoInfo.class)
 	private String cidade;
 	
-	@NotNull(message = "Campo estado não pode ser nulo")
+	@NotNull(message = "Campo estado não pode ser nulo", groups = EnderecoInfo.class)
 	private String estado;
 	
-	@NotNull(message = "Campo CEP não pode ser nulo")
-	private String CEP;
+	@NotNull(message = "Campo CEP não pode ser nulo", groups = EnderecoInfo.class)
+	private String cep;
+	
+	@NotNull(message="Tipo não pode ser nulo")
+	private TipoEnderecoEnum tipo;
+	
+	private Long clienteId;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getLogradouro() {
 		return logradouro;
@@ -35,11 +48,11 @@ public class EnderecoVO {
 		this.logradouro = logradouro;
 	}
 
-	public int getNumero() {
+	public String getNumero() {
 		return numero;
 	}
 
-	public void setNumero(int numero) {
+	public void setNumero(String numero) {
 		this.numero = numero;
 	}
 
@@ -75,13 +88,28 @@ public class EnderecoVO {
 		this.estado = estado;
 	}
 
-	public String getCEP() {
-		return CEP;
+	public String getCep() {
+		return cep;
 	}
 
-	public void setCEP(String cEP) {
-		CEP = cEP;
+	public void setCep(String cep) {
+		this.cep = cep;
 	}
-	
+
+	public TipoEnderecoEnum getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(TipoEnderecoEnum tipo) {
+		this.tipo = tipo;
+	}
+
+	public Long getClienteId() {
+		return clienteId;
+	}
+
+	public void setClienteId(Long clienteId) {
+		this.clienteId = clienteId;
+	} 
 	
 }
