@@ -28,9 +28,7 @@ public class EnderecoEntity implements Serializable{
 	
 	
 	
-//	@Column(name = "CD_ENDERECO")
-//	//@NotNull(message = "Campo Codigo endereco não pode ser nulo")
-//	private Integer codigoEndereco;
+
 	
 	@Column(name = "LOGRADOURO")
 	@NotNull(message = "Campo logradouro não pode ser nulo")

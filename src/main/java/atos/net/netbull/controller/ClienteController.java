@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import atos.net.netbull.domain.ClienteVO;
+import atos.net.netbull.service.AtualizaClienteService;
 import atos.net.netbull.service.BuscaClienteService;
 import atos.net.netbull.service.CriaClienteService;
 import atos.net.netbull.service.DeletaClienteService;
@@ -29,13 +31,15 @@ public class ClienteController {
 	private CriaClienteService service;
 	private BuscaClienteService buscaClienteService;
 	private DeletaClienteService deletaClienteService;
+	private AtualizaClienteService atualizaclienteService;
 	
-	public ClienteController(CriaClienteService service, BuscaClienteService buscaClienteService,DeletaClienteService deletaClienteService) {
+	public ClienteController(CriaClienteService service, BuscaClienteService buscaClienteService,
+			DeletaClienteService deletaClienteService, AtualizaClienteService atualizaclienteService) {
 		super();
 		this.service = service;
 		this.buscaClienteService = buscaClienteService;
 		this.deletaClienteService = deletaClienteService;
-		
+		this.atualizaclienteService = atualizaclienteService;
 		
 	}
 	
@@ -69,5 +73,11 @@ public class ClienteController {
 		Page<ClienteVO> lista = buscaClienteService.findAllPaged(pageable);
 		
 		return ResponseEntity.ok().body(lista);
+	}
+	
+	@PutMapping(value="/{id}")
+	public ResponseEntity<ClienteVO> atualiza(@PathVariable Long id, @RequestBody ClienteVO vo){
+		vo = atualizaclienteService.update(id,vo);
+		return ResponseEntity.ok().body(vo);
 	}
 }
