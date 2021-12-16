@@ -23,17 +23,17 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import atos.net.netbull.repository.ClientePessoaFisicaRepository;
+import atos.net.netbull.domain.ClienteVO;
+import atos.net.netbull.repository.ClienteRepository;
 import atos.net.netbull.repository.entity.ClienteEntity;
-import atos.net.netbull.repository.entity.ClientePessoaFisicaEntity;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(Lifecycle.PER_CLASS)
-class BuscaClientePessoaFisicaServiceTest {
+class BuscaClienteServiceTest {
 
 	private Validator validator;
-	private ClientePessoaFisicaRepository clienteRepo;
-	private BuscaClientePessoaFisicaService buscaClienteServ;
+	private ClienteRepository clienteRepo;
+	private BuscaClienteService buscaClienteServ;
 	
 	@BeforeAll
 	public void inicioGeral() {
@@ -44,8 +44,8 @@ class BuscaClientePessoaFisicaServiceTest {
 	@BeforeEach
 	public void iniciarCadaTeste() {
 		
-		this.clienteRepo = Mockito.mock(ClientePessoaFisicaRepository.class);
-		this.buscaClienteServ = new BuscaClientePessoaFisicaService(validator, clienteRepo);	
+		this.clienteRepo = Mockito.mock(ClienteRepository.class);
+		this.buscaClienteServ = new BuscaClienteService(validator, clienteRepo);	
 	}
 	
 	@Test	
@@ -53,18 +53,18 @@ class BuscaClientePessoaFisicaServiceTest {
 	public void test_quandoEncontraCliente(){
 		assertNotNull(buscaClienteServ);
 		
-		ClientePessoaFisicaEntity clienteEntityTreinado = new ClientePessoaFisicaEntity();
+		ClienteEntity clienteEntityTreinado = new ClienteEntity();
 		clienteEntityTreinado.setId(3l);
 		
 		when(clienteRepo.findById(anyLong()))
 				.thenReturn(Optional.of(clienteEntityTreinado));
 		
-		ClienteEntity notaFiscalVendaEntityRetornado = buscaClienteServ.getClienteById(3l);
+		ClienteVO clienteRetornado = buscaClienteServ.porId(3l);
 		
 		then(clienteRepo).should(times(1)).findById(anyLong());
 		
-		assertNotNull(notaFiscalVendaEntityRetornado);
-		assertEquals(3l, notaFiscalVendaEntityRetornado.getId());	
+		assertNotNull(clienteRetornado);
+		assertEquals(3l, clienteRetornado.getId());	
 	}
 	
 	@Test	
@@ -72,7 +72,7 @@ class BuscaClientePessoaFisicaServiceTest {
 	public void test_quandoNaoEncontraClientePorID_lancaExcessao(){
 		assertNotNull(this.buscaClienteServ);
 		var assertThrows = assertThrows(NotFoundException.class, ()->
-			this.buscaClienteServ.getClienteById(3l));
+			this.buscaClienteServ.porId(3l));
 		
 		then(clienteRepo).should(times(1)).findById(anyLong());	
 		assertEquals(assertThrows.getMessage(), "Cliente não encontrado - id: 3");

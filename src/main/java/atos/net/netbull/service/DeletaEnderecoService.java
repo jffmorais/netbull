@@ -15,6 +15,9 @@ public class DeletaEnderecoService {
 	}
 	
 	public void excluiEndereco(Long id, Integer endNum) {
+		
+		// to-do: verificar se o minimo de enderecos já foi atingido
+		
 		endRepo.deletaEndereco(id, endNum);
 	}
 }

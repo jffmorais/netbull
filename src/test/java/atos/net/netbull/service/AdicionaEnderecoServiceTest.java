@@ -35,10 +35,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import atos.net.netbull.domain.ClienteVO;
 import atos.net.netbull.domain.EnderecoVO;
 import atos.net.netbull.domain.TipoEnderecoEnum;
-import atos.net.netbull.repository.ClientePessoaFisicaRepository;
-import atos.net.netbull.repository.ClientePessoaJuridicaRepository;
 import atos.net.netbull.repository.EnderecoRepository;
-import atos.net.netbull.repository.entity.ClientePessoaFisicaEntity;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(Lifecycle.PER_CLASS)
@@ -46,11 +43,8 @@ class AdicionaEnderecoServiceTest {
 
 	private Validator validator;
 	private AdicionaEnderecoService addEnderecoServ;
-	private BuscaClientePessoaFisicaService buscaClientePfServ;
-	private BuscaClientePessoaJuridicaService buscaClientePjServ;
 	private EnderecoRepository enderecoRepo;
-	private ClientePessoaFisicaRepository pessoaFisicaRepo;
-	private ClientePessoaJuridicaRepository pessoaJuridicaRepo;
+	private BuscaClienteService buscaCliente;
 
 	@BeforeAll
 	public void inicioGeral() {
@@ -62,10 +56,8 @@ class AdicionaEnderecoServiceTest {
 	@BeforeEach
 	public void iniciarCadaTeste() {
 		this.enderecoRepo = Mockito.mock(EnderecoRepository.class);
-		this.buscaClientePfServ = Mockito.mock(BuscaClientePessoaFisicaService.class);
-		this.buscaClientePjServ = Mockito.mock(BuscaClientePessoaJuridicaService.class);
-		this.addEnderecoServ = new AdicionaEnderecoService(this.validator, this.enderecoRepo, this.buscaClientePfServ,
-				this.buscaClientePjServ);
+		this.buscaCliente = Mockito.mock(BuscaClienteService.class);
+		this.addEnderecoServ = new AdicionaEnderecoService(this.validator, this.enderecoRepo, this.buscaCliente);
 	}
 
 	@Test
@@ -132,7 +124,7 @@ class AdicionaEnderecoServiceTest {
 		endereco.setCep("15253012");
 		endereco.setTipo(TipoEnderecoEnum.RESIDENCIA);
 
-		when(buscaClientePfServ.getClienteById(anyLong())).thenThrow(NotFoundException.class);
+		when(buscaCliente.porId(anyLong())).thenThrow(NotFoundException.class);
 
 		var assertThrows = assertThrows(NotFoundException.class, () -> addEnderecoServ.persistir(endereco));
 
@@ -156,7 +148,7 @@ class AdicionaEnderecoServiceTest {
 		endereco.setCep("15253012");
 		endereco.setTipo(TipoEnderecoEnum.RESIDENCIA);
 
-		when(buscaClientePjServ.getClienteById(anyLong())).thenThrow(NotFoundException.class);
+		when(buscaCliente.porId(anyLong())).thenThrow(NotFoundException.class);
 
 		var assertThrows = assertThrows(NotFoundException.class, () -> addEnderecoServ.persistir(endereco));
 
@@ -179,17 +171,16 @@ class AdicionaEnderecoServiceTest {
 		endereco.setEstado("SP");
 		endereco.setCep("15253012");
 		endereco.setTipo(TipoEnderecoEnum.RESIDENCIA);
-		
-		ClientePessoaFisicaEntity clienteTreinado = new ClientePessoaFisicaEntity();
+
+		ClienteVO clienteTreinado = new ClienteVO();
 		clienteTreinado.setId(1l);
-		
-		when(buscaClientePfServ.getClienteById(anyLong()))
-			.thenReturn(clienteTreinado);
-		
+
+		when(buscaCliente.porId(anyLong())).thenReturn(clienteTreinado);
+
 		EnderecoVO endCriado = addEnderecoServ.persistir(endereco);
-		
-		then(buscaClientePfServ).should(times(1)).getClienteById(anyLong());
-		
+
+		then(buscaCliente).should(times(1)).porId(anyLong());
+
 		assertNotNull(endCriado);
 
 	}

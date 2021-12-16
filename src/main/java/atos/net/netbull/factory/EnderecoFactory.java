@@ -1,4 +1,4 @@
-package factory;
+package atos.net.netbull.factory;
 
 import atos.net.netbull.domain.EnderecoVO;
 import atos.net.netbull.repository.entity.ClienteEntity;

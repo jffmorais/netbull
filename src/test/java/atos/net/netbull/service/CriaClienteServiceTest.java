@@ -2,7 +2,13 @@ package atos.net.netbull.service;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItems;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.then;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,29 +35,30 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import atos.net.netbull.domain.ClienteVO;
 import atos.net.netbull.domain.EnderecoVO;
 import atos.net.netbull.domain.TipoClienteEnum;
-import atos.net.netbull.repository.ClientePessoaFisicaRepository;
-import atos.net.netbull.repository.entity.ClientePessoaFisicaEntity;
+import atos.net.netbull.domain.TipoEnderecoEnum;
+import atos.net.netbull.factory.ClienteFactory;
+import atos.net.netbull.repository.ClienteRepository;
+import atos.net.netbull.repository.entity.ClienteEntity;
+
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(Lifecycle.PER_CLASS)
-class CriaClientePessoaFisicaServiceTest {
-
+public class CriaClienteServiceTest {
+	
+	private CriaClienteService criaClienteServ;
+	private ClienteRepository repositorio;
 	private Validator validator;
-	private CriaClientePessoaFisicaService criaClienteServ;
-	private ClientePessoaFisicaRepository clienteRepo;
 	
 	@BeforeAll
 	public void inicioGeral() {
-		ValidatorFactory validatorFactor = 
-				Validation.buildDefaultValidatorFactory();
-		
-		this.validator = validatorFactor.getValidator();	
+		ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+		this.validator = validatorFactory.getValidator();
 	}
 	
 	@BeforeEach
-	public void  iniciarCadaTeste() {	
-		this.clienteRepo = Mockito.mock(ClientePessoaFisicaRepository.class);
-		this.criaClienteServ = new CriaClientePessoaFisicaService(this.validator, this.clienteRepo);
+	public void  iniciarCadaTeste() {
+		this.repositorio = Mockito.mock(ClienteRepository.class);	
+		this.criaClienteServ = new CriaClienteService(validator, this.repositorio);
 	}
 	
 	@Test
@@ -68,12 +75,11 @@ class CriaClientePessoaFisicaServiceTest {
 	}
 	
 	@Test
-	@DisplayName("Testa os campos do cliente PF com obrigatoriedade.")
+	@DisplayName("Testa os campos do cliente com obrigatoriedade.")
 	void test_quando_TodosCamposObrigatorios_Eh_Null_LancarExcecao() {
 		assertNotNull(criaClienteServ);
 		
 		ClienteVO cliente = new ClienteVO();
-		
 		
 		var assertThrows =assertThrows(ConstraintViolationException.class, ()->
 		criaClienteServ.persistir(cliente));
@@ -82,13 +88,65 @@ class CriaClientePessoaFisicaServiceTest {
 		List<String> mensagens = assertThrows.getConstraintViolations()
 				.stream().map(ConstraintViolation::getMessage)
 				.collect(Collectors.toList());
-		assertThat(mensagens, hasItems("Campo tipo de cliente não pode ser nulo",
+		
+		assertThat(mensagens, hasItems(
+				"Campo tipo de cliente não pode ser nulo",
+				"Campo nome não pode ser nulo",
+				"Campo cpf não pode ser nulo",
+				"Campo data de nascimento não pode ser nulo",
+				"Campo email não pode ser nulo",
+				"Campo telefone não pode ser nulo",
+				"Campo Endereço não pode ser nulo"
+				));
+	}
+	
+	@Test
+	@DisplayName("Testa os campos especificos de PF com obrigatoriedade.")
+	void test_quando_TodosCamposPfObrigatorios_Eh_Null_LancarExcecao() {
+		assertNotNull(criaClienteServ);
+		
+		ClienteVO cliente = new ClienteVO();
+		cliente.setTipo(TipoClienteEnum.PF);
+		
+		var assertThrows =assertThrows(ConstraintViolationException.class, ()->
+		criaClienteServ.persistir(cliente));
+		
+		assertEquals(6, assertThrows.getConstraintViolations().size());
+		List<String> mensagens = assertThrows.getConstraintViolations()
+				.stream().map(ConstraintViolation::getMessage)
+				.collect(Collectors.toList());
+		
+		assertThat(mensagens, hasItems(
 				"Campo nome não pode ser nulo",
 				"Campo cpf não pode ser nulo",
 				"Campo data de nascimento não pode ser nulo",
 				"Campo email não pode ser nulo",
 				"Campo telefone não pode ser nulo",
 				"Campo Endereço não pode ser nulo"));
+	}
+	
+	@Test
+	@DisplayName("Testa os campos especificos de PJ com obrigatoriedade.")
+	void test_quando_TodosCamposPjObrigatorios_Eh_Null_LancarExcecao() {
+		assertNotNull(criaClienteServ);
+		
+		ClienteVO cliente = new ClienteVO();
+		cliente.setTipo(TipoClienteEnum.PJ);
+		
+		var assertThrows =assertThrows(ConstraintViolationException.class, ()->
+		criaClienteServ.persistir(cliente));
+		
+		assertEquals(5, assertThrows.getConstraintViolations().size());
+		List<String> mensagens = assertThrows.getConstraintViolations()
+				.stream().map(ConstraintViolation::getMessage)
+				.collect(Collectors.toList());
+		
+		assertThat(mensagens, hasItems(
+				"Campo cnpj não pode ser nulo",
+				"Campo telefone não pode ser nulo",
+				"Campo Endereço não pode ser nulo",
+				"Campo email não pode ser nulo",
+				"Campo razão social não pode ser nulo"));
 	}
 	
 	@Test
@@ -113,6 +171,7 @@ class CriaClientePessoaFisicaServiceTest {
 		endereco.setCidade("Cidade Genérica");
 		endereco.setEstado("SP");
 		endereco.setCep("15253012");
+		endereco.setTipo(TipoEnderecoEnum.RESIDENCIA);
 		
 		cliente.addEndereco(endereco);
 		
@@ -144,6 +203,7 @@ class CriaClientePessoaFisicaServiceTest {
 		endereco.setCidade("Cidade Genérica");
 		endereco.setEstado("SP");
 		endereco.setCep("15253012");
+		endereco.setTipo(TipoEnderecoEnum.RESIDENCIA);
 		
 		cliente.addEndereco(endereco);
 		
@@ -205,8 +265,9 @@ class CriaClientePessoaFisicaServiceTest {
 		endereco.setCidade("Cidade Genérica");
 		endereco.setEstado("SP");
 		endereco.setCep("15253012");
+		endereco.setTipo(TipoEnderecoEnum.RESIDENCIA);
 		
-		cliente.addEndereco(endereco);
+		cliente.addEndereco(endereco);		
 		
 		var assertThrows = assertThrows(ConstraintViolationException.class, ()->
 		criaClienteServ.persistir(cliente));
@@ -241,6 +302,7 @@ class CriaClientePessoaFisicaServiceTest {
 		endereco.setCidade("Cidade Genérica");
 		endereco.setEstado("SP");
 		endereco.setCep("15253012");
+		endereco.setTipo(TipoEnderecoEnum.RESIDENCIA);
 		
 		cliente.addEndereco(endereco);
 		
@@ -252,7 +314,7 @@ class CriaClientePessoaFisicaServiceTest {
 	
 	@Test
 	@DisplayName("Testa persistencia do cliente")
-	void test_quando_Clinte_criadoo() {
+	void test_quando_Clinte_criado() {
 		
 		assertNotNull(criaClienteServ);
 		
@@ -272,12 +334,19 @@ class CriaClientePessoaFisicaServiceTest {
 		endereco.setCidade("Cidade Genérica");
 		endereco.setEstado("SP");
 		endereco.setCep("15253012");
+		endereco.setTipo(TipoEnderecoEnum.RESIDENCIA);
 		
 		cliente.addEndereco(endereco);
 		
-		ClienteVO clienteCriado = criaClienteServ.persistir(cliente);
+		ClienteEntity clienteEntity = new ClienteFactory(cliente).toEntity();
 		
-		assertNotNull(clienteCriado);
+		when(this.repositorio.save(any())).thenReturn(clienteEntity);
+		
+		ClienteVO criado = criaClienteServ.persistir(cliente);
+
+		then(repositorio).should(times(1)).save(any());
+		assertNotNull(criado);
 	}
+
 
 }
