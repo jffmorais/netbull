@@ -7,23 +7,29 @@ public class EnderecoVO {
 	
 	private Long id;
 	
+
 	@NotNull(message = "Campo logradouro não pode ser nulo", groups = EnderecoInfo.class)
 	private String logradouro;
 	
+
 	@NotNull(message = "Campo numero não pode ser nulo", groups = EnderecoInfo.class)
 	private String numero;	
 	
 	private String complemento;
 	
+
 	@NotNull(message = "Campo bairro não pode ser nulo", groups = EnderecoInfo.class)
 	private String bairro;
 	
+
 	@NotNull(message = "Campo cidade não pode ser nulo", groups = EnderecoInfo.class)
 	private String cidade;
 	
+
 	@NotNull(message = "Campo estado não pode ser nulo", groups = EnderecoInfo.class)
 	private String estado;
 	
+
 	@NotNull(message = "Campo CEP não pode ser nulo", groups = EnderecoInfo.class)
 	private String cep;
 	
@@ -48,9 +54,11 @@ public class EnderecoVO {
 		this.logradouro = logradouro;
 	}
 
+
 	public String getNumero() {
 		return numero;
 	}
+
 
 	public void setNumero(String numero) {
 		this.numero = numero;
@@ -88,9 +96,11 @@ public class EnderecoVO {
 		this.estado = estado;
 	}
 
+
 	public String getCep() {
 		return cep;
 	}
+
 
 	public void setCep(String cep) {
 		this.cep = cep;

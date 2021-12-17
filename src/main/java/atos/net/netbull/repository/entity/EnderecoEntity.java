@@ -19,16 +19,13 @@ import atos.net.netbull.domain.TipoEnderecoEnum;
 
 @Entity
 @Table(name = "ENDERECO")
-public class EnderecoEntity implements Serializable {
+public class EnderecoEntity implements Serializable{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	@EmbeddedId
 	private EnderecoPK id;
-
+	
 	@Column(name = "LOGRADOURO")
 	@NotNull(message = "Campo logradouro não pode ser nulo")
 	private String logradouro;
@@ -60,6 +57,14 @@ public class EnderecoEntity implements Serializable {
 	@NotNull(message = "Campo tipo não pode ser nulo")
 	@Enumerated(EnumType.STRING)
 	private TipoEnderecoEnum tipo;
+
+	public EnderecoPK getId() {
+		return id;
+	}
+
+	public void setId(EnderecoPK id) {
+		this.id = id;
+	}
 
 	public String getLogradouro() {
 		return logradouro;
@@ -125,13 +130,11 @@ public class EnderecoEntity implements Serializable {
 		this.tipo = tipo;
 	}
 
-	public EnderecoPK getId() {
-		return id;
+	@Override
+	public String toString() {
+		return "EnderecoEntity [id=" + id + ", logradouro=" + logradouro + ", numero=" + numero + ", complemento="
+				+ complemento + ", bairro=" + bairro + ", cidade=" + cidade + ", estado=" + estado + ", cep=" + cep
+				+ ", tipo=" + tipo + "]";
 	}
 
-	public void setId(EnderecoPK id) {
-		this.id = id;
-	}
-	
-	
 }

@@ -22,6 +22,7 @@ import atos.net.netbull.service.AtualizaClienteService;
 import atos.net.netbull.service.BuscaClienteService;
 import atos.net.netbull.service.CriaClienteService;
 import atos.net.netbull.service.DeletaClienteService;
+import javassist.NotFoundException;
 
 @RestController
 @RequestMapping(value="/v1/clientes")
@@ -62,7 +63,7 @@ public class ClienteController {
 	}
 	
 	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id) {
+	public ResponseEntity<Void> delete(@PathVariable Long id) throws Exception {
 		deletaClienteService.deletaCliente(id);
 		return ResponseEntity.noContent().build();
 	}

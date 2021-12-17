@@ -15,6 +15,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class ClienteVO {
 
+
+
 	private Long id;
 
 	@NotNull(message = "Campo tipo de cliente não pode ser nulo", groups = {PessoaFisicaInfo.class, PessoaJuridicaInfo.class})
@@ -33,7 +35,7 @@ public class ClienteVO {
 	private String cnpj;
 	
 	@NotNull(message = "Campo data de nascimento não pode ser nulo", groups = PessoaFisicaInfo.class)
-	@JsonFormat(pattern="dd/MM/yyyy")
+	//@JsonFormat(pattern="dd/MM/yyyy")
 	private LocalDate dtNascimento;
 	
 	private LocalDateTime dtCriacao;
@@ -50,6 +52,9 @@ public class ClienteVO {
 	@Valid
 	private List<EnderecoVO> enderecos;
 
+	
+
+	
 	public Long getId() {
 		return id;
 	}

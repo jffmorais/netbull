@@ -1,6 +1,7 @@
 package atos.net.netbull.repository.entity;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -45,8 +46,10 @@ public class ClienteEntity implements Serializable {
 
 	@Id
 	@Column(name = "ID_CLIENTE")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	@SequenceGenerator(name = "sq_cli", sequenceName = "sequence_cli", allocationSize = 1, initialValue = 1)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)//, generator = "sq_cli")
+	@SequenceGenerator(name = "sq_cli",sequenceName = "sequence_cli",
+    allocationSize = 1,
+    initialValue = 1)
 	private Long id;
 
 	@Column(name = "TIPO_CLIENTE", insertable = false, updatable = false)
@@ -208,3 +211,6 @@ public class ClienteEntity implements Serializable {
 	}
 
 }
+
+
+
