@@ -24,6 +24,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import atos.net.netbull.domain.ClienteVO;
+import atos.net.netbull.domain.TipoClienteEnum;
 import atos.net.netbull.repository.ClienteRepository;
 import atos.net.netbull.repository.entity.ClienteEntity;
 
@@ -55,6 +56,7 @@ class BuscaClienteServiceTest {
 		
 		ClienteEntity clienteEntityTreinado = new ClienteEntity();
 		clienteEntityTreinado.setId(3l);
+		clienteEntityTreinado.setTipo(TipoClienteEnum.PF);
 		
 		when(clienteRepo.findById(anyLong()))
 				.thenReturn(Optional.of(clienteEntityTreinado));

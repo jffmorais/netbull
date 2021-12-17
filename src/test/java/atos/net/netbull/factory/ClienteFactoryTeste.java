@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import atos.net.netbull.domain.ClienteVO;
 import atos.net.netbull.domain.EnderecoVO;
+import atos.net.netbull.domain.TipoClienteEnum;
 import atos.net.netbull.domain.TipoEnderecoEnum;
 import atos.net.netbull.repository.entity.ClienteEntity;
 
@@ -34,6 +35,7 @@ public class ClienteFactoryTeste {
 		cliente.setDtCriacao(LocalDateTime.now());
 		cliente.setEmail("marcos@gmail.com");
 		cliente.setTelefone("11999999999");
+		cliente.setTipo(TipoClienteEnum.PF);
 		
 		EnderecoVO endereco = new EnderecoVO();
 		endereco.setLogradouro("av paulista");
