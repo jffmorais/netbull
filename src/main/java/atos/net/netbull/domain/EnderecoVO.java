@@ -2,11 +2,12 @@ package atos.net.netbull.domain;
 
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class EnderecoVO {
 	
-	
 	private Long id;
-	
 
 	@NotNull(message = "Campo logradouro não pode ser nulo", groups = EnderecoInfo.class)
 	private String logradouro;
