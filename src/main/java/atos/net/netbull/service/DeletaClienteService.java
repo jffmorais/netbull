@@ -1,11 +1,15 @@
 package atos.net.netbull.service;
 
+
+
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.NotFoundException;
 
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import atos.net.netbull.repository.ClienteRepository;
+
 
 @Service
 public class DeletaClienteService {
@@ -34,12 +38,13 @@ public class DeletaClienteService {
 //	}
 	
 	
-	public void deletaCliente(Long id) {
+	public void deletaCliente(Long id) throws Exception {
+		
 		try {
 			clienteRepository.deleteById(id);
 		}
 		catch (EmptyResultDataAccessException e) {
-			throw new NotFoundException();
+			throw new BadRequestException();
 		}
 	}
 }

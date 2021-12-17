@@ -1,5 +1,8 @@
 package atos.net.netbull.service;
 
+import javax.persistence.EntityNotFoundException;
+import javax.ws.rs.NotFoundException;
+
 import org.springframework.stereotype.Service;
 
 import atos.net.netbull.domain.ClienteVO;
@@ -17,8 +20,12 @@ public class AtualizaClienteService {
 	}
 
 	public ClienteVO update(Long id, ClienteVO vo) {
+		try { 
 		ClienteEntity entity = clienteRepository.getById(id);
-			
+		
+		if(entity.toString() == null) {
+			throw new NotFoundException();
+		}
 		ClienteEntity clienteEntity = new ClienteFactory(vo).toEntity();
 		
 		entity.setNome(clienteEntity.getNome());
@@ -29,6 +36,10 @@ public class AtualizaClienteService {
 	
 		entity = clienteRepository.save(entity);
 		return new ClienteFactory(entity).toVO();
+		}
+		catch(EntityNotFoundException e) {
+			return null;//throw new NotFoundException();
+		}
 		
 	}
 	

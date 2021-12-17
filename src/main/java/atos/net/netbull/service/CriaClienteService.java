@@ -45,9 +45,5 @@ public class CriaClienteService {
 		return  new ClienteFactory(clienteEntity).toVO(); 
 	}
 
-//	public ClienteVO findById(long id) {
-//		Optional<ClienteEntity> obj = repository.findById(id);
-//		ClienteEntity entidade = obj.orElseThrow(()-> new NotFoundException("cliente nao encontrado"));
-//		return new ClienteVO(entidade);
-//	}
+
 }

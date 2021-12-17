@@ -34,7 +34,7 @@ public class BuscaClienteService {
 
 
 	public Page<ClienteVO> findAllPaged(Pageable pageable) {
-		Page<ClienteEntity> lista = repositoy.findAll(pageable);
+		Page<ClienteEntity> lista = repositoy. findAll(pageable);
 		return lista.map(x -> new ClienteFactory(x).toVO());
 	}
 	
