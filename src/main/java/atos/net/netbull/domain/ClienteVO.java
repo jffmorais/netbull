@@ -12,10 +12,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ClienteVO {
-
-
 
 	private Long id;
 
@@ -35,7 +35,7 @@ public class ClienteVO {
 	private String cnpj;
 	
 	@NotNull(message = "Campo data de nascimento não pode ser nulo", groups = PessoaFisicaInfo.class)
-	//@JsonFormat(pattern="dd/MM/yyyy")
+	@JsonFormat(pattern="dd/MM/yyyy")
 	private LocalDate dtNascimento;
 	
 	private LocalDateTime dtCriacao;
