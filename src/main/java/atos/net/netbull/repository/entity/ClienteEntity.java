@@ -33,8 +33,6 @@ import atos.net.netbull.domain.TipoClienteEnum;
 
 @Entity
 @Table(name = "CLIENTE")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "TIPO_CLIENTE", discriminatorType = DiscriminatorType.STRING)
 public class ClienteEntity implements Serializable {
 
 	/**
@@ -50,7 +48,7 @@ public class ClienteEntity implements Serializable {
     initialValue = 1)
 	private Long id;
 
-	@Column(name = "TIPO_CLIENTE", insertable = false, updatable = false)
+	@Column(name = "TIPO_CLIENTE")
 	@NotNull(message = "Campo tipo de cliente não pode ser nulo", groups = {PessoaFisicaInfo.class, PessoaJuridicaInfo.class})
 	@Enumerated(EnumType.STRING)
 	private TipoClienteEnum tipo;
