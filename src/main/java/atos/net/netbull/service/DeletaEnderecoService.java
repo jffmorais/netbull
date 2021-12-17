@@ -18,6 +18,6 @@ public class DeletaEnderecoService {
 		
 		// to-do: verificar se o minimo de enderecos já foi atingido
 		
-		endRepo.deletaEndereco(id, endNum);
+		//endRepo.deletaEndereco(id, endNum);
 	}
 }

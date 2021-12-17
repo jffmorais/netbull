@@ -50,7 +50,7 @@ public class ClienteEntity implements Serializable {
 	private Long id;
 
 	@Column(name = "TIPO_CLIENTE", insertable = false, updatable = false)
-	@NotNull(message = "Campo tipo de cliente não pode ser nulo")
+	@NotNull(message = "Campo tipo de cliente não pode ser nulo", groups = {PessoaFisicaInfo.class, PessoaJuridicaInfo.class})
 	@Enumerated(EnumType.STRING)
 	private TipoClienteEnum tipo;
 
@@ -58,36 +58,36 @@ public class ClienteEntity implements Serializable {
 	private LocalDateTime dtCriacao;
 
 	@Column(name = "EMAIL")
-	@NotNull(message = "Campo email não pode ser nulo")
-	@Email(message = "Campo Email precisa ser válido")
+	@NotNull(message = "Campo email não pode ser nulo", groups = {PessoaFisicaInfo.class, PessoaJuridicaInfo.class})
+	@Email(message = "Campo Email precisa ser válido", groups = {PessoaFisicaInfo.class, PessoaJuridicaInfo.class})
 	private String email;
 
 	@Column(name = "TELEFONE")
-	@NotNull(message = "Campo telefone não pode ser nulo")
+	@NotNull(message = "Campo telefone não pode ser nulo", groups = {PessoaFisicaInfo.class, PessoaJuridicaInfo.class})
 	private String telefone;
 
 	@Column(name = "NOME")
-	@NotNull(message = "Campo nome não pode ser nulo")
+	@NotNull(message = "Campo nome não pode ser nulo", groups = PessoaFisicaInfo.class)
 	private String nome;
 
 	@Column(name = "CPF")
-	@NotNull(message = "Campo cpf não pode ser nulo")
+	@NotNull(message = "Campo cpf não pode ser nulo", groups = PessoaFisicaInfo.class)
 	private String cpf;
 
 	@Column(name = "DT_NASCIMENTO")
-	@NotNull(message = "Campo data de nascimento não pode ser nulo")
+	@NotNull(message = "Campo data de nascimento não pode ser nulo", groups = PessoaFisicaInfo.class)
 	private LocalDate dtNascimento;
 
 	@Column(name = "RAZAO_SOCIAL")
-	@NotNull(message = "Campo razão social não pode ser nulo")
+	@NotNull(message = "Campo razão social não pode ser nulo", groups = PessoaJuridicaInfo.class)
 	private String razaoSocial;
 
 	@Column(name = "CNPJ")
-	@NotNull(message = "Campo cnpj não pode ser nulo")
+	@NotNull(message = "Campo cnpj não pode ser nulo", groups = PessoaJuridicaInfo.class)
 	private String cnpj;
 
 	@OneToMany(mappedBy = "id.cliente", cascade = CascadeType.ALL)
-	@NotNull(message = "Deve-se adicionar ao menos um e no máximo três endereços")
+	@NotNull(message = "Campo Endereço não pode ser nulo", groups = {PessoaFisicaInfo.class, PessoaJuridicaInfo.class})
 	@Size(min = 1, max = 3, message = "Deve-se adicionar ao menos um e no máximo três endereços")
 	private List<EnderecoEntity> enderecos;
 
