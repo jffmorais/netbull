@@ -1,14 +1,13 @@
 package atos.net.netbull.controller;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -23,7 +22,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -82,7 +80,7 @@ public class ClienteControllerIT {
 	    ClienteVO cliente = new ClienteVO();
 	    
 	    cliente.setNome("carlos");
-	    cliente.setCpf("386.911.996-98");
+	    cliente.setCpf("776.153.110-20");
 		cliente.setDtCriacao(LocalDateTime.now());
 		cliente.setDtNascimento(LocalDate.of(1990, 10, 10));
 		cliente.setEmail("mm@gmail.com");
@@ -155,17 +153,22 @@ public class ClienteControllerIT {
 	}
 	
 	@Test
-	@DisplayName("Cria cliente")
-	public void test_criaCliente_retorna_retorno_criado() throws Exception{
+	@DisplayName("Cria cliente PF")
+	public void test_criaClientePF_retorna_retorno_criado() throws Exception{
 		
 	    ClienteVO cliente = new ClienteVO();
 	    
+	    
+	    		    
+	    
+	    
 	    cliente.setNome("carlos");
-	    cliente.setCpf("123465678911");
+	    cliente.setCpf("978.043.320-17");
 		cliente.setDtCriacao(LocalDateTime.now());
-		cliente.setDtNascimento(LocalDate.of(1990, 10, 10));
+		cliente.setDtNascimento(LocalDate.now().minus(18,ChronoUnit.YEARS)); //.MIN(18,YEARS); //.of(1990,10,19));
 		cliente.setEmail("mm@gmail.com");
 		cliente.setTelefone("11999999999");
+		cliente.setTipo(TipoClienteEnum.PF);
 		
 		EnderecoVO endereco = new EnderecoVO();
 		
@@ -198,7 +201,53 @@ public class ClienteControllerIT {
 		
 	}
 	
-
+	@Test
+	@DisplayName("Cria cliente PF")
+	public void test_criaClientePJ_retorna_retorno_criado() throws Exception{
+		
+	    ClienteVO cliente = new ClienteVO();
+	    
+	    
+	    		    
+	    
+	    cliente.setTipo(TipoClienteEnum.PJ);
+	    cliente.setRazaoSocial("Garcia Auto Peças Ltda.");
+	    cliente.setCnpj("36485583000135");
+		cliente.setDtCriacao(LocalDateTime.now());
+		cliente.setEmail("mm@gmail.com");
+		cliente.setTelefone("11999999999");
+		cliente.setTipo(TipoClienteEnum.PJ);
+		
+		EnderecoVO endereco = new EnderecoVO();
+		
+		endereco.setLogradouro("av paulista");
+		endereco.setNumero("500");
+		endereco.setComplemento("masp");
+		endereco.setBairro("Bela Vista");
+		endereco.setCidade("São Paulo");
+		endereco.setEstado("SP");
+		endereco.setCep("01311-000");
+		endereco.setTipo(TipoEnderecoEnum.RESIDENCIA);
+		
+		cliente.addEndereco(endereco);
+		
+		String jsonBody = mapper.writeValueAsString(cliente);
+	
+		String nomeEsperado = cliente.getNome();
+		String cpfEsperado = cliente.getCpf();
+		System.out.println(nomeEsperado);
+		
+		ResultActions resultado = 
+				 mockMvc.perform(post("/v1/clientes/")
+						 .content(jsonBody)
+						 .contentType(MediaType.APPLICATION_JSON)
+						 .accept(MediaType.APPLICATION_JSON));
+		
+		resultado.andExpect(status().isCreated());
+		
+		
+		
+	}
 
 		
 		
