@@ -27,7 +27,7 @@ public class BuscaClienteService {
 		
 	public ClienteVO porId(long id) {
 	 ClienteEntity clienteEntity =	this.repositoy.findById(id)
-				.orElseThrow(()-> new NotFoundException("Cliente não encontrado "+id));	
+				.orElseThrow(()-> new NotFoundException("Cliente não encontrado - id: "+id));	
 		
 		return new ClienteFactory(clienteEntity).toVO(); 
 	}
