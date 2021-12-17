@@ -214,6 +214,37 @@ public class CriaClienteServiceTest {
 	}
 	
 	@Test
+	@DisplayName("Testa se o CNPJ informado é valido")
+	void test_quando_CNPJ_eh_invalido_LancaExcecao() {
+		
+		assertNotNull(criaClienteServ);
+		
+		ClienteVO cliente = new ClienteVO();
+		cliente.setRazaoSocial("Garcia Auto Peças Ltda.");
+		cliente.setCnpj("11111111111");
+		cliente.setDtCriacao(LocalDateTime.now());
+		cliente.setTipo(TipoClienteEnum.PJ);
+		cliente.setEmail("amanda@garciaauto.com");
+		cliente.setTelefone("1199824285");
+		
+		EnderecoVO endereco = new EnderecoVO();
+		endereco.setLogradouro("Rua Genérica");
+		endereco.setNumero("1526");
+		endereco.setBairro("Jardim Genérico");
+		endereco.setCidade("Cidade Genérica");
+		endereco.setEstado("SP");
+		endereco.setCep("15253012");
+		endereco.setTipo(TipoEnderecoEnum.RESIDENCIA);
+		
+		cliente.addEndereco(endereco);
+		
+		var assertThrows = assertThrows(BadRequestException.class, ()->
+		criaClienteServ.persistir(cliente));
+
+		assertEquals(assertThrows.getMessage(),"O CNPJ informado não é válido");
+	}
+	
+	@Test
 	@DisplayName("Testa a quantidade máxima de endereços")
 	void test_execede_qtd_max_enderecos_LancaExcecao() {
 		

@@ -68,9 +68,14 @@ public class CriaClienteService {
 			}
 		}else {
 			validateMessages = this.validator.validate(cliente, PessoaJuridicaInfo.class);
-			// to-do: validações de PJ vão aqui
+
 			if(!validateMessages.isEmpty()) {
 				throw new ConstraintViolationException("Cliente Inválido", validateMessages);
+			}
+			
+			ValidaDocumentos validaDocs = new ValidaDocumentos();			
+			if(!validaDocs.isCNPJ(cliente.getCnpj())) {
+				throw new BadRequestException("O CNPJ informado não é válido");
 			}
 		}
 			
