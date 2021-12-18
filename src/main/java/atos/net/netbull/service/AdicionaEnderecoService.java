@@ -1,5 +1,8 @@
 package atos.net.netbull.service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -53,10 +56,23 @@ public class AdicionaEnderecoService {
 		if(cliente.isEmpty()) {
 			throw new BadRequestException("O cliente não foi encontrado");
 		}
+		
+		ArrayList<Integer> possibilidadesId = new ArrayList<Integer>(Arrays.asList(1,2,3));  
+		List<Integer> nrEnderecos = new ArrayList<Integer>();
+		
+		cliente.get().getEnderecos().forEach(end -> {
+			nrEnderecos.add(end.getId());
+		});
+		
+		if(nrEnderecos.size() >= 3) {
+			throw new BadRequestException("A quantidade máxima de endereços foi atingida");
+		}
+		
+		possibilidadesId.removeAll(nrEnderecos);
+		
+		endereco.setId(possibilidadesId.get(0));
 
 		EnderecoEntity endEntity = new EnderecoFactory(endereco).toEntity();
-
-		// to-do: verificar limite de enderecos
 
 		this.enderecoRepo.save(endEntity);
 
