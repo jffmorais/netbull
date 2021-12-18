@@ -2,6 +2,7 @@ package atos.net.netbull.controller;
 
 import java.net.URI;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,22 +52,12 @@ public class EnderecoController {
 	@PatchMapping(value="/editar/{id}/{endNum}")
 	public ResponseEntity<EnderecoVO> altera(@RequestBody EnderecoVO vo, @PathVariable Long id, @PathVariable Integer endNum){
 		
-		EnderecoEntity endEntity = new EnderecoFactory(vo).toEntity();
+		vo.setId(endNum);
+		vo.setClienteId(id);
 		
-		ClienteEntity clienteEntity = new ClienteEntity();
-		clienteEntity.setId(id);
+		EnderecoVO endAlterado = this.alteraService.persistir(vo);
 		
-		EnderecoPK endPK = new EnderecoPK();
-		endPK.setCliente(clienteEntity);
-		endPK.setNumeroEndereco(endNum);
-		
-		endEntity.setId(endPK);
-		
-		clienteEntity.add(endEntity);
-		
-		this.alteraService.persistir(clienteEntity);
-		
-		return ResponseEntity.noContent().build();
+		return ResponseEntity.status(HttpStatus.CREATED).body(endAlterado);
 	}
 	
 	@DeleteMapping(value = "/remover/{id}/{endNum}")
