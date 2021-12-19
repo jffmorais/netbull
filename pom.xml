@@ -247,7 +247,7 @@
 										<limit>
 											<counter>CLASS</counter>
 											<value>COVEREDRATIO</value>
-											<minimum>30%</minimum>
+											<minimum>90%</minimum>
 										</limit>
 									</limits>
 								</rule>

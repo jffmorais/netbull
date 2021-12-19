@@ -1,16 +1,19 @@
 package atos.net.netbull.service;
 
+import java.util.Optional;
+
 import javax.validation.Validator;
-import javax.ws.rs.NotFoundException;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import atos.net.netbull.controller.exceptions.ControllerExceptionHandler;
 import atos.net.netbull.domain.ClienteVO;
 import atos.net.netbull.factory.ClienteFactory;
 import atos.net.netbull.repository.ClienteRepository;
 import atos.net.netbull.repository.entity.ClienteEntity;
+import atos.net.netbull.service.exceptions.ControllerNotFoundException;
 
 @Service
 public class BuscaClienteService {
@@ -26,10 +29,10 @@ public class BuscaClienteService {
 
 		
 	public ClienteVO porId(long id) {
-	 ClienteEntity clienteEntity =	this.repositoy.findById(id)
-				.orElseThrow(()-> new NotFoundException("Cliente não encontrado - id: "+id));	
-		System.out.println(clienteEntity);
-		return new ClienteFactory(clienteEntity).toVO(); 
+	 Optional<ClienteEntity> obj =	this.repositoy.findById(id);
+	 ClienteEntity entity = obj.orElseThrow(()-> new ControllerNotFoundException("Cliente não encontrado"));	
+		
+		return new ClienteFactory(entity).toVO(); 
 	}
 
 

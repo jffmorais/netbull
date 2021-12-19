@@ -1,14 +1,10 @@
 package atos.net.netbull.service;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
 
 import javax.validation.Validation;
-import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import javax.ws.rs.NotFoundException;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -20,8 +16,10 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.EmptyResultDataAccessException;
 
 import atos.net.netbull.repository.ClienteRepository;
+import atos.net.netbull.service.exceptions.ControllerNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(Lifecycle.PER_CLASS)
@@ -50,20 +48,35 @@ public class DeletaClienteServiceTeste {
 	}
 	
 	
-	@Test
-	@DisplayName("lança excessão quando cliente não existir.")
-	public void deve_lancar_excessao_quando_cliente_nao_existir() {
-		
-		doThrow(NotFoundException.class).when(clienteRepository).deleteById(Long.valueOf(55l));
-		
-		var assertThrows = assertThrows(NotFoundException.class,() ->{
-			deletaClienteService.deletaCliente(Long.valueOf(55l));
-		});
-		
-		assertNotNull(assertThrows);
-	}
+//	@Test
+//	@DisplayName("lança excessão quando cliente não existir.")
+//	public void deve_lancar_excessao_quando_cliente_nao_existir() {
+//		
+//		doThrow(EmptyResultDataAccessException.class).when(clienteRepository).deleteById(543L);
+//		
+//		 Assertions.assertThrows(ControllerNotFoundException.class,() ->{
+//			deletaClienteService.deletaCliente(543l);
+//		});
+//		
+////		assertNotNull(assertThrows);
+//		
+//		verify(clienteRepository, Mockito.times(1)).deleteById(600L);
+//	}
 	
-
+	@Test
+	@DisplayName("testa delete quando id existir.")
+	public void test_delete_quando_id_existir() {
+		
+		Mockito.doNothing().when(clienteRepository).deleteById(1L);
+		
+		 Assertions.assertDoesNotThrow(() ->{
+			 deletaClienteService.deletaCliente(1L);
+		 });
+		
+//		
+		
+		verify(clienteRepository, Mockito.times(1)).deleteById(1L);
+	}
 		
 	
 }

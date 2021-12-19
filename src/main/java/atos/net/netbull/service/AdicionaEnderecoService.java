@@ -43,7 +43,7 @@ public class AdicionaEnderecoService {
 		Set<ConstraintViolation<EnderecoVO>> validateMessages = this.validador.validate(endereco, EnderecoInfo.class);
 
 		if (!validateMessages.isEmpty()) {
-			throw new ConstraintViolationException("Endereco inválido", validateMessages);
+			throw new ConstraintViolationException("Endereço inválido", validateMessages);
 		}
 
 		ValidaCep validaCep = new ValidaCep();

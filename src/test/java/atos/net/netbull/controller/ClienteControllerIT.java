@@ -1,9 +1,11 @@
 package atos.net.netbull.controller;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -250,7 +252,13 @@ public class ClienteControllerIT {
 	}
 
 		
-		
+		public void test_bucarcar_todos_deve_retornar_busca_paginada() throws Exception{
+			ResultActions result= mockMvc.perform(get("/v1/clientes/?page=2&size=3")
+					.accept(MediaType.APPLICATION_JSON));
+			
+			result.andExpect(status().isOk());
+			result.andExpect(jsonPath("$.content").exists());
+		}
 	
     
 }

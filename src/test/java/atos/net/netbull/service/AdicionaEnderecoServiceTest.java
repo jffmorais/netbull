@@ -81,7 +81,7 @@ class AdicionaEnderecoServiceTest {
 
 		var assertThrows = assertThrows(ConstraintViolationException.class, () -> addEnderecoServ.persistir(endereco));
 
-		assertEquals(6, assertThrows.getConstraintViolations().size());
+		assertEquals(7, assertThrows.getConstraintViolations().size());
 		List<String> mensagens = assertThrows.getConstraintViolations().stream().map(ConstraintViolation::getMessage)
 				.collect(Collectors.toList());
 		assertThat(mensagens,
@@ -104,9 +104,9 @@ class AdicionaEnderecoServiceTest {
 		endereco.setEstado("SP");
 		endereco.setCep("1525301288");
 
-		var assertThrows = assertThrows(BadRequestException.class, () -> addEnderecoServ.persistir(endereco));
+		var assertThrows = assertThrows(ConstraintViolationException.class, () -> addEnderecoServ.persistir(endereco));
 
-		assertEquals(assertThrows.getMessage(), "O CEP informado não é válido");
+		assertEquals(assertThrows.getMessage(), "Endereço inválido");
 	}
 
 	@Test

@@ -13,7 +13,6 @@ import java.util.Optional;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import javax.ws.rs.NotFoundException;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,6 +28,7 @@ import atos.net.netbull.domain.ClienteVO;
 import atos.net.netbull.domain.TipoClienteEnum;
 import atos.net.netbull.repository.ClienteRepository;
 import atos.net.netbull.repository.entity.ClienteEntity;
+import atos.net.netbull.service.exceptions.ControllerNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(Lifecycle.PER_CLASS)
@@ -81,11 +81,11 @@ public class BuscaClienteServiceTeste {
 	@DisplayName("Testa Quando não encontra cliente por ID.")
 	public void test_quandoNaoEncontraClientePorID_lancaExcessao(){
 		assertNotNull(this.buscaClienteService);
-		var assertThrows = assertThrows(NotFoundException.class, ()->
+		var assertThrows = assertThrows(ControllerNotFoundException.class, ()->
 			this.buscaClienteService.porId(3l));
 		
 		then(clienteRepository).should(times(1)).findById(anyLong());	
-		assertEquals(assertThrows.getMessage(), "Cliente não encontrado - id: 3");
+		assertEquals(assertThrows.getMessage(), "Cliente não encontrado");
 		
 	}
 

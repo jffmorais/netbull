@@ -9,6 +9,7 @@ import atos.net.netbull.domain.ClienteVO;
 import atos.net.netbull.factory.ClienteFactory;
 import atos.net.netbull.repository.ClienteRepository;
 import atos.net.netbull.repository.entity.ClienteEntity;
+import atos.net.netbull.service.exceptions.ControllerNotFoundException;
 
 @Service
 public class AtualizaClienteService {
@@ -38,7 +39,7 @@ public class AtualizaClienteService {
 		return new ClienteFactory(entity).toVO();
 		}
 		catch(EntityNotFoundException e) {
-			return null;//throw new NotFoundException();
+			throw new ControllerNotFoundException("Id não encontrado " + id);
 		}
 		
 	}
