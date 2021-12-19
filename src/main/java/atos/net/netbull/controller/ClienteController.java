@@ -22,11 +22,12 @@ import atos.net.netbull.service.AtualizaClienteService;
 import atos.net.netbull.service.BuscaClienteService;
 import atos.net.netbull.service.CriaClienteService;
 import atos.net.netbull.service.DeletaClienteService;
-import javassist.NotFoundException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping(value="/v1/clientes")
-//@Tag(name = "Clientes")
+@Tag(name = "Clientes")
 public class ClienteController {
 	
 	private CriaClienteService service;
@@ -45,6 +46,7 @@ public class ClienteController {
 	}
 	
 	@PostMapping
+	@Operation(description = "Cria um cliente")
 	public ResponseEntity<ClienteVO> insert( @RequestBody  ClienteVO vo){
 		
 		vo = service.persistir(vo);

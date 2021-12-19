@@ -107,7 +107,7 @@ public class ClienteControllerIT {
 		System.out.println(nomeEsperado);
 		
 		ResultActions resultado = 
-				 mockMvc.perform(put("/v1/clientes/{id}", 5L)
+				 mockMvc.perform(put("/v1/clientes/{id}", 1L)
 						 .content(jsonBody)
 						 .contentType(MediaType.APPLICATION_JSON)
 						 .accept(MediaType.APPLICATION_JSON));
