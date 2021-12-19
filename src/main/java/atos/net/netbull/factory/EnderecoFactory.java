@@ -22,7 +22,8 @@ public class EnderecoFactory {
 	
 	private EnderecoVO transformaVO(EnderecoEntity entity) {
 		EnderecoVO  endVO = new EnderecoVO();
-		endVO.setId(entity.getId().getCliente().getId());
+		endVO.setId(entity.getId().getNumeroEndereco());
+		endVO.setClienteId(entity.getId().getCliente().getId());
 		endVO.setLogradouro(entity.getLogradouro());
 		endVO.setNumero(entity.getNumero());
 		endVO.setComplemento(entity.getComplemento());
@@ -41,6 +42,7 @@ public class EnderecoFactory {
 		
 		EnderecoPK endPK = new EnderecoPK();
 		endPK.setCliente(cliente);
+		endPK.setNumeroEndereco(vo.getId());
 		
 		entity.setId(endPK);
 		entity.setLogradouro(vo.getLogradouro());
@@ -50,6 +52,7 @@ public class EnderecoFactory {
 		entity.setCidade(vo.getCidade());
 		entity.setEstado(vo.getEstado());
 		entity.setCep(vo.getCep());
+		entity.setTipo(vo.getTipo());
 		return entity;
 	}
 	

@@ -7,7 +7,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class EnderecoVO {
 	
-	private Long id;
+	@NotNull(message = "Campo id não pode ser nulo", groups = EnderecoInfo.class)
+	private int id;
 
 	@NotNull(message = "Campo logradouro não pode ser nulo", groups = EnderecoInfo.class)
 	private String logradouro;
@@ -37,13 +38,14 @@ public class EnderecoVO {
 	@NotNull(message="Tipo não pode ser nulo")
 	private TipoEnderecoEnum tipo;
 	
+	@NotNull(message = "Campo id do cliente não pode ser nulo", groups = EnderecoInfo.class)
 	private Long clienteId;
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

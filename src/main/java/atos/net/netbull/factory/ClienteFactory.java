@@ -55,6 +55,8 @@ public class ClienteFactory {
 	private void construirEnderecoVO(ClienteVO cliVO, AtomicInteger numeroEndereco, EnderecoEntity endereco) {
 		EnderecoVO enderecoVO = new EnderecoVO();
 
+		enderecoVO.setId(endereco.getId().getNumeroEndereco());
+		enderecoVO.setClienteId(endereco.getId().getCliente().getId());
 		enderecoVO.setLogradouro(endereco.getLogradouro());
 		enderecoVO.setNumero(endereco.getNumero());
 		enderecoVO.setComplemento(endereco.getComplemento());
