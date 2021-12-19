@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -260,5 +261,37 @@ public class ClienteControllerIT {
 			result.andExpect(jsonPath("$.content").exists());
 		}
 	
-    
+		@Test
+		@DisplayName("testa deleta cliente")
+		public void test_deleta_cliente() throws Exception{
+			
+		
+			
+			ResultActions resultado = 
+					 mockMvc.perform(delete("/v1/clientes/{id}", 1L)
+							 .contentType(MediaType.APPLICATION_JSON)
+							 .accept(MediaType.APPLICATION_JSON));
+			
+			resultado.andExpect(status().isNoContent());
+
+			
+			
+		}
+		
+		@Test
+		@DisplayName("testa quando delete não encontra cliente")
+		public void test_quando_deleta_nao_encontra_cliente() throws Exception{
+			
+		
+			
+			ResultActions resultado = 
+					 mockMvc.perform(delete("/v1/clientes/{id}", 990L)
+							 .contentType(MediaType.APPLICATION_JSON)
+							 .accept(MediaType.APPLICATION_JSON));
+			
+			resultado.andExpect(status().isNotFound());
+
+			
+			
+		}
 }

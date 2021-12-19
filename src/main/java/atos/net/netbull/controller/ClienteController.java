@@ -58,7 +58,7 @@ public class ClienteController {
 	}
 	
 	@GetMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON })
-	public ResponseEntity<ClienteVO> findById(@PathVariable("id") Long id){
+	public ResponseEntity<ClienteVO> findById(@PathVariable("id") Long id) throws Exception{
 		ClienteVO clienteEncontrado = buscaClienteService.porId(id);
 		
 		return ResponseEntity.ok(clienteEncontrado);

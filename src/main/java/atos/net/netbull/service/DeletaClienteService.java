@@ -29,7 +29,7 @@ public class DeletaClienteService {
 			clienteRepository.deleteById(id);
 		}
 		catch (EmptyResultDataAccessException e) {
-			throw new ControllerNotFoundException("ID não encontrado " + id);
+			throw new ControllerNotFoundException("ID não encontrado ");
 		}
 	}
 }

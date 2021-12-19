@@ -24,7 +24,7 @@ import atos.net.netbull.repository.entity.ClienteEntity;
 public class ClienteFactoryTeste {
 	
 	@Test
-	@DisplayName("Testa o factory de VO para entity")
+	@DisplayName("Testa o CleinteFactory de VO para entity")
 	public void test_quandoCriarEntityPeloVO_sohTransformaparaEntity() {
 		
 		ClienteVO cliente = new ClienteVO();
