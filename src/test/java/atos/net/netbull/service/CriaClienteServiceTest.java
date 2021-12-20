@@ -63,7 +63,7 @@ public class CriaClienteServiceTest {
 	
 	@Test
 	@DisplayName("Testa quando o cliente PF é nulo.")
-	void test_quando_cliente_Eh_Null_LancarExcecao() {
+	public void test_quando_cliente_Eh_Null_LancarExcecao() {
 		assertNotNull(criaClienteServ);
 
 		ClienteVO cliente =  null;
@@ -76,7 +76,7 @@ public class CriaClienteServiceTest {
 	
 	@Test
 	@DisplayName("Testa os campos do cliente com obrigatoriedade.")
-	void test_quando_TodosCamposObrigatorios_Eh_Null_LancarExcecao() {
+	public void test_quando_TodosCamposObrigatorios_Eh_Null_LancarExcecao() {
 		assertNotNull(criaClienteServ);
 		
 		ClienteVO cliente = new ClienteVO();
@@ -102,7 +102,7 @@ public class CriaClienteServiceTest {
 	
 	@Test
 	@DisplayName("Testa os campos especificos de PF com obrigatoriedade.")
-	void test_quando_TodosCamposPfObrigatorios_Eh_Null_LancarExcecao() {
+	public void test_quando_TodosCamposPfObrigatorios_Eh_Null_LancarExcecao() {
 		assertNotNull(criaClienteServ);
 		
 		ClienteVO cliente = new ClienteVO();
@@ -127,7 +127,7 @@ public class CriaClienteServiceTest {
 	
 	@Test
 	@DisplayName("Testa os campos especificos de PJ com obrigatoriedade.")
-	void test_quando_TodosCamposPjObrigatorios_Eh_Null_LancarExcecao() {
+	public void test_quando_TodosCamposPjObrigatorios_Eh_Null_LancarExcecao() {
 		assertNotNull(criaClienteServ);
 		
 		ClienteVO cliente = new ClienteVO();
@@ -151,7 +151,7 @@ public class CriaClienteServiceTest {
 	
 	@Test
 	@DisplayName("Testa se cliente PF é maior de 12 anos.")
-	void test_quando_DataNascimento_eh_depois_dataMinima_LancaExcecao() {
+	public void test_quando_DataNascimento_eh_depois_dataMinima_LancaExcecao() {
 		
 		assertNotNull(criaClienteServ);
 		
@@ -183,7 +183,7 @@ public class CriaClienteServiceTest {
 	
 	@Test
 	@DisplayName("Testa se o CPF informado é valido")
-	void test_quando_CPF_eh_invalido_LancaExcecao() {
+	public void test_quando_CPF_eh_invalido_LancaExcecao() {
 		
 		assertNotNull(criaClienteServ);
 		
@@ -215,7 +215,7 @@ public class CriaClienteServiceTest {
 	
 	@Test
 	@DisplayName("Testa se o CNPJ informado é valido")
-	void test_quando_CNPJ_eh_invalido_LancaExcecao() {
+	public void test_quando_CNPJ_eh_invalido_LancaExcecao() {
 		
 		assertNotNull(criaClienteServ);
 		
@@ -246,7 +246,7 @@ public class CriaClienteServiceTest {
 	
 	@Test
 	@DisplayName("Testa a quantidade máxima de endereços")
-	void test_execede_qtd_max_enderecos_LancaExcecao() {
+	public void test_execede_qtd_max_enderecos_LancaExcecao() {
 		
 		assertNotNull(criaClienteServ);
 		
@@ -276,7 +276,7 @@ public class CriaClienteServiceTest {
 	
 	@Test
 	@DisplayName("Testa validade do email informado")
-	void test_email_invalido_LancaExcecao() {
+	public void test_email_invalido_LancaExcecao() {
 		
 		assertNotNull(criaClienteServ);
 		
@@ -313,7 +313,7 @@ public class CriaClienteServiceTest {
 	
 	@Test
 	@DisplayName("Testa validade do numero de telefone informado")
-	void test_telefone_invalido_LancaExcecao() {
+	public void test_telefone_invalido_LancaExcecao() {
 		
 		assertNotNull(criaClienteServ);
 		
@@ -345,7 +345,7 @@ public class CriaClienteServiceTest {
 	
 	@Test
 	@DisplayName("Testa persistencia do cliente")
-	void test_quando_Clinte_criado() {
+	public void test_quando_Clinte_criado() {
 		
 		assertNotNull(criaClienteServ);
 		

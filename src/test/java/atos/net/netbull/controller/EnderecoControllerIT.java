@@ -11,17 +11,17 @@ import java.time.temporal.ChronoUnit;
 import java.util.Iterator;
 
 import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
-import javax.ws.rs.BadRequestException;
 import javax.ws.rs.core.MediaType;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -35,10 +35,10 @@ import atos.net.netbull.domain.EnderecoVO;
 import atos.net.netbull.domain.TipoClienteEnum;
 import atos.net.netbull.domain.TipoEnderecoEnum;
 
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@SpringBootTest
-@AutoConfigureMockMvc
-@Transactional
+@ActiveProfiles("test")
 class EnderecoControllerIT {
 
 	private static final String URI_ADICIONA = "/v1/endereco/adicionar/{id}";

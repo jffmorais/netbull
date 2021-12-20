@@ -2,6 +2,7 @@ package atos.net.netbull.service;
 
 import java.util.List;
 
+import javax.validation.Validator;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.NotFoundException;
 
@@ -14,9 +15,11 @@ import atos.net.netbull.repository.EnderecoRepository;
 public class DeletaEnderecoService {
 
 	private EnderecoRepository endRepo;
+	private Validator validador;
 
-	public DeletaEnderecoService(EnderecoRepository endRepo) {
+	public DeletaEnderecoService(Validator validador, EnderecoRepository endRepo) {
 		super();
+		this.validador = validador;
 		this.endRepo = endRepo;
 	}
 	

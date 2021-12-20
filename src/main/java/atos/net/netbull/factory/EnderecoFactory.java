@@ -1,7 +1,6 @@
 package atos.net.netbull.factory;
 
 import atos.net.netbull.domain.EnderecoVO;
-import atos.net.netbull.domain.TipoEnderecoEnum;
 import atos.net.netbull.repository.entity.ClienteEntity;
 import atos.net.netbull.repository.entity.EnderecoEntity;
 import atos.net.netbull.repository.entity.EnderecoPK;

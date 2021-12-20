@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import atos.net.netbull.controller.exceptions.ControllerExceptionHandler;
 import atos.net.netbull.domain.ClienteVO;
 import atos.net.netbull.factory.ClienteFactory;
 import atos.net.netbull.repository.ClienteRepository;

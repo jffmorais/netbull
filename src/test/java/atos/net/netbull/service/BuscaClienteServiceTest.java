@@ -8,7 +8,6 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
-import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Validation;
@@ -22,12 +21,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springdoc.core.converters.models.Pageable;
-import org.springframework.data.domain.PageImpl;
-
 import atos.net.netbull.domain.ClienteVO;
 import atos.net.netbull.domain.TipoClienteEnum;
 import atos.net.netbull.repository.ClienteRepository;
@@ -38,7 +33,6 @@ import atos.net.netbull.service.exceptions.ControllerNotFoundException;
 @TestInstance(Lifecycle.PER_CLASS)
 class BuscaClienteServiceTest {
 	
-	private PageImpl<ClienteEntity> page;
 	private Validator validator;
 	private ClienteRepository clienteRepo;
 	private BuscaClienteService buscaClienteServ;

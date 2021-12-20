@@ -13,7 +13,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolation;
@@ -64,7 +63,7 @@ public class AdicionaEnderecoServiceTest {
 
 	@Test
 	@DisplayName("Testa quando o Endereço é nulo.")
-	void test_quando_endereco_Eh_Null_LancarExcecao() {
+	public void test_quando_endereco_Eh_Null_LancarExcecao() {
 		assertNotNull(addEnderecoServ);
 
 		EnderecoVO endereco = null;
@@ -76,7 +75,7 @@ public class AdicionaEnderecoServiceTest {
 
 	@Test
 	@DisplayName("Testa os campos do endereço com obrigatoriedade.")
-	void test_quando_TodosCamposObrigatorios_Eh_Null_LancarExcecao() {
+	public void test_quando_TodosCamposObrigatorios_Eh_Null_LancarExcecao() {
 		assertNotNull(addEnderecoServ);
 
 		EnderecoVO endereco = new EnderecoVO();
@@ -94,7 +93,7 @@ public class AdicionaEnderecoServiceTest {
 
 	@Test
 	@DisplayName("Testa se o CEP informado é valido")
-	void test_quando_CEP_eh_invalido_LancaExcecao() {
+	public void test_quando_CEP_eh_invalido_LancaExcecao() {
 
 		assertNotNull(addEnderecoServ);
 
@@ -115,7 +114,7 @@ public class AdicionaEnderecoServiceTest {
 
 	@Test
 	@DisplayName("Testa se o cliente existe")
-	void test_quando_ClientePfNaoExiste_LancaExcessao() {
+	public void test_quando_ClientePfNaoExiste_LancaExcessao() {
 		assertNotNull(addEnderecoServ);
 
 		EnderecoVO endereco = new EnderecoVO();
@@ -139,7 +138,7 @@ public class AdicionaEnderecoServiceTest {
 
 	@Test
 	@DisplayName("Testa persistencia da adição de endereço")
-	void test_quando_endereco_adicionado() {
+	public void test_quando_endereco_adicionado() {
 		assertNotNull(addEnderecoServ);
 
 		EnderecoVO endereco = new EnderecoVO();
@@ -169,7 +168,7 @@ public class AdicionaEnderecoServiceTest {
 	
 	@Test
 	@DisplayName("Testa quando a quantidade limite de endereços")
-	void test_quando_qtd_max_enderecos_atingido() {
+	public void test_quando_qtd_max_enderecos_atingido() {
 		assertNotNull(addEnderecoServ);
 
 		EnderecoVO endereco = new EnderecoVO();

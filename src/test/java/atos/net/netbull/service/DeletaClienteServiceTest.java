@@ -1,9 +1,9 @@
 package atos.net.netbull.service;
 
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 
 import javax.validation.Validation;
+import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
 import org.junit.jupiter.api.Assertions;
@@ -16,35 +16,27 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.dao.EmptyResultDataAccessException;
-
 import atos.net.netbull.repository.ClienteRepository;
-import atos.net.netbull.service.exceptions.ControllerNotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(Lifecycle.PER_CLASS)
-public class DeletaClienteServiceTeste {
-	
-	
-	
-	
+public class DeletaClienteServiceTest {
+		
 	private ClienteRepository clienteRepository;
-	
+	private Validator validator;
 	private DeletaClienteService deletaClienteService;
 	
 	
 	@BeforeAll
 	public void inicioGeral() {
-		
 		ValidatorFactory validatorFactor = Validation.buildDefaultValidatorFactory();
-		
+		this.validator = validatorFactor.getValidator();
 	}
 	@BeforeEach
 	public void iniciarCadaTeste() {
 		
-		this.clienteRepository = Mockito.mock(ClienteRepository.class);
-		
-		deletaClienteService = new DeletaClienteService( clienteRepository);	
+		this.clienteRepository = Mockito.mock(ClienteRepository.class);	
+		this.deletaClienteService = new DeletaClienteService(validator, clienteRepository);	
 	}
 	
 	
@@ -71,10 +63,7 @@ public class DeletaClienteServiceTeste {
 		
 		 Assertions.assertDoesNotThrow(() ->{
 			 deletaClienteService.deletaCliente(1L);
-		 });
-		
-//		
-		
+		 });	
 		verify(clienteRepository, Mockito.times(1)).deleteById(1L);
 	}
 		
