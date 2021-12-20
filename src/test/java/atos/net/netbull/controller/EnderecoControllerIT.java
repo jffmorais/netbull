@@ -8,9 +8,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Iterator;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.core.MediaType;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -70,23 +72,23 @@ class EnderecoControllerIT {
 						.contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(endereco)))
 				.andDo(print()).andExpect(status().isBadRequest());
 	}
-	
+
 	@Test
 	@DisplayName("Adiciona novo endereco ao cliente")
-	public void test_adicionaEndereco_retorna_retorno_criado() throws Exception{
-		
-	    ClienteVO cliente = new ClienteVO();
-	    
-	    cliente.setNome("carlos");
-	    cliente.setCpf("978.043.320-17");
+	public void test_adicionaEndereco_retorna_retorno_criado() throws Exception {
+
+		ClienteVO cliente = new ClienteVO();
+
+		cliente.setNome("carlos");
+		cliente.setCpf("978.043.320-17");
 		cliente.setDtCriacao(LocalDateTime.now());
-		cliente.setDtNascimento(LocalDate.now().minus(18,ChronoUnit.YEARS));
+		cliente.setDtNascimento(LocalDate.now().minus(18, ChronoUnit.YEARS));
 		cliente.setEmail("mm@gmail.com");
 		cliente.setTelefone("11999999999");
 		cliente.setTipo(TipoClienteEnum.PF);
-		
+
 		EnderecoVO endereco = new EnderecoVO();
-		
+
 		endereco.setLogradouro("av paulista");
 		endereco.setNumero("500");
 		endereco.setComplemento("masp");
@@ -95,27 +97,21 @@ class EnderecoControllerIT {
 		endereco.setEstado("SP");
 		endereco.setCep("01311-000");
 		endereco.setTipo(TipoEnderecoEnum.RESIDENCIA);
-		
+
 		cliente.addEndereco(endereco);
-		
+
 		String jsonBody = mapper.writeValueAsString(cliente);
-		
-		ResultActions resultado = 
-				 mockMvc.perform(post("/v1/clientes/")
-						 .content(jsonBody)
-						 .contentType(MediaType.APPLICATION_JSON)
-						 .accept(MediaType.APPLICATION_JSON));
-		
+
+		ResultActions resultado = mockMvc.perform(post("/v1/clientes/").content(jsonBody)
+				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON));
+
 		resultado.andExpect(status().isCreated());
-		
-		ClienteVO clienteDevolvido = mapper.readValue(resultado
-				.andReturn()
-				.getResponse()
-				.getContentAsString(),
+
+		ClienteVO clienteDevolvido = mapper.readValue(resultado.andReturn().getResponse().getContentAsString(),
 				ClienteVO.class);
-		
+
 		EnderecoVO enderecoAdd = new EnderecoVO();
-		
+
 		enderecoAdd.setLogradouro("Av. Doutor Rubens Filho");
 		enderecoAdd.setNumero("1506");
 		enderecoAdd.setComplemento("masp");
@@ -124,15 +120,282 @@ class EnderecoControllerIT {
 		enderecoAdd.setEstado("SP");
 		enderecoAdd.setCep("01311-000");
 		enderecoAdd.setTipo(TipoEnderecoEnum.COBRANCA);
-		
+
 		jsonBody = mapper.writeValueAsString(enderecoAdd);
-		
-		ResultActions resultadoAdd = 
-				 mockMvc.perform(post(URI_ADICIONA, clienteDevolvido.getId())
-						 .content(jsonBody)
-						 .contentType(MediaType.APPLICATION_JSON)
-						 .accept(MediaType.APPLICATION_JSON));
-		
+
+		ResultActions resultadoAdd = mockMvc.perform(post(URI_ADICIONA, clienteDevolvido.getId()).content(jsonBody)
+				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON));
+
 		resultadoAdd.andExpect(status().isCreated());
+	}
+
+	@Test
+	@DisplayName("Altera endereco existente")
+	public void test_alteraEndereco_retorna_retorno_criado() throws Exception {
+
+		ClienteVO cliente = new ClienteVO();
+
+		cliente.setNome("carlos");
+		cliente.setCpf("978.043.320-17");
+		cliente.setDtCriacao(LocalDateTime.now());
+		cliente.setDtNascimento(LocalDate.now().minus(18, ChronoUnit.YEARS));
+		cliente.setEmail("mm@gmail.com");
+		cliente.setTelefone("11999999999");
+		cliente.setTipo(TipoClienteEnum.PF);
+
+		EnderecoVO endereco = new EnderecoVO();
+
+		endereco.setLogradouro("av paulista");
+		endereco.setNumero("500");
+		endereco.setComplemento("masp");
+		endereco.setBairro("Bela Vista");
+		endereco.setCidade("São Paulo");
+		endereco.setEstado("SP");
+		endereco.setCep("01311-000");
+		endereco.setTipo(TipoEnderecoEnum.RESIDENCIA);
+
+		cliente.addEndereco(endereco);
+
+		String jsonBody = mapper.writeValueAsString(cliente);
+
+		ResultActions resultado = mockMvc.perform(post("/v1/clientes/").content(jsonBody)
+				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON));
+		
+		ClienteVO clienteDevolvido = mapper.readValue(resultado.andReturn().getResponse().getContentAsString(),
+				ClienteVO.class);
+
+		resultado.andExpect(status().isCreated());
+		
+		EnderecoVO enderecoAltera = new EnderecoVO();
+
+		enderecoAltera.setLogradouro("Av. Doutor Rubens Filho");
+		enderecoAltera.setNumero("1506");
+		enderecoAltera.setComplemento("masp");
+		enderecoAltera.setBairro("Bela Vista");
+		enderecoAltera.setCidade("São Paulo");
+		enderecoAltera.setEstado("SP");
+		enderecoAltera.setCep("01311-000");
+		enderecoAltera.setTipo(TipoEnderecoEnum.COBRANCA);
+
+		jsonBody = mapper.writeValueAsString(enderecoAltera);
+		
+		Iterator<EnderecoVO> iter = clienteDevolvido.getEnderecos().iterator();
+
+		ResultActions resultadoAltera = mockMvc.perform(MockMvcRequestBuilders.put(URI_ALTERA, clienteDevolvido.getId(), iter.next().getId()).content(jsonBody)
+				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON));
+
+		resultadoAltera.andExpect(status().isCreated());
+	}
+	
+	@Test
+	@DisplayName("Altera endereco Inexistente")
+	public void test_alteraEndereco_retorna_retorno_NotFoundException() throws Exception {
+
+		ClienteVO cliente = new ClienteVO();
+
+		cliente.setNome("carlos");
+		cliente.setCpf("978.043.320-17");
+		cliente.setDtCriacao(LocalDateTime.now());
+		cliente.setDtNascimento(LocalDate.now().minus(18, ChronoUnit.YEARS));
+		cliente.setEmail("mm@gmail.com");
+		cliente.setTelefone("11999999999");
+		cliente.setTipo(TipoClienteEnum.PF);
+
+		EnderecoVO endereco = new EnderecoVO();
+
+		endereco.setLogradouro("av paulista");
+		endereco.setNumero("500");
+		endereco.setComplemento("masp");
+		endereco.setBairro("Bela Vista");
+		endereco.setCidade("São Paulo");
+		endereco.setEstado("SP");
+		endereco.setCep("01311-000");
+		endereco.setTipo(TipoEnderecoEnum.RESIDENCIA);
+
+		cliente.addEndereco(endereco);
+
+		String jsonBody = mapper.writeValueAsString(cliente);
+
+		ResultActions resultado = mockMvc.perform(post("/v1/clientes/").content(jsonBody)
+				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON));
+		
+		ClienteVO clienteDevolvido = mapper.readValue(resultado.andReturn().getResponse().getContentAsString(),
+				ClienteVO.class);
+
+		resultado.andExpect(status().isCreated());
+		
+		EnderecoVO enderecoAltera = new EnderecoVO();
+
+		enderecoAltera.setLogradouro("Av. Doutor Rubens Filho");
+		enderecoAltera.setNumero("1506");
+		enderecoAltera.setComplemento("masp");
+		enderecoAltera.setBairro("Bela Vista");
+		enderecoAltera.setCidade("São Paulo");
+		enderecoAltera.setEstado("SP");
+		enderecoAltera.setCep("01311-000");
+		enderecoAltera.setTipo(TipoEnderecoEnum.COBRANCA);
+
+		jsonBody = mapper.writeValueAsString(enderecoAltera);
+
+		ResultActions resultadoAltera = mockMvc.perform(MockMvcRequestBuilders.put(URI_ALTERA, clienteDevolvido.getId(), 3).content(jsonBody)
+				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON));
+
+		resultadoAltera.andExpect(status().isNotFound());
+	}
+	
+	@Test
+	@DisplayName("Deleta endereco de cliente com dois endereços")
+	public void test_deletaEndereco_retorna_retorno_criado() throws Exception {
+
+		ClienteVO cliente = new ClienteVO();
+
+		cliente.setNome("carlos");
+		cliente.setCpf("978.043.320-17");
+		cliente.setDtCriacao(LocalDateTime.now());
+		cliente.setDtNascimento(LocalDate.now().minus(18, ChronoUnit.YEARS));
+		cliente.setEmail("mm@gmail.com");
+		cliente.setTelefone("11999999999");
+		cliente.setTipo(TipoClienteEnum.PF);
+
+		EnderecoVO endereco = new EnderecoVO();
+
+		endereco.setLogradouro("av paulista");
+		endereco.setNumero("500");
+		endereco.setComplemento("masp");
+		endereco.setBairro("Bela Vista");
+		endereco.setCidade("São Paulo");
+		endereco.setEstado("SP");
+		endereco.setCep("01311-000");
+		endereco.setTipo(TipoEnderecoEnum.RESIDENCIA);
+
+		cliente.addEndereco(endereco);
+		
+		EnderecoVO segundoEndereco = new EnderecoVO();
+
+		segundoEndereco.setLogradouro("Av. Doutor Rubens Filho");
+		segundoEndereco.setNumero("1506");
+		segundoEndereco.setComplemento("masp");
+		segundoEndereco.setBairro("Bela Vista");
+		segundoEndereco.setCidade("São Paulo");
+		segundoEndereco.setEstado("SP");
+		segundoEndereco.setCep("01311-000");
+		segundoEndereco.setTipo(TipoEnderecoEnum.COBRANCA);
+		
+		cliente.addEndereco(segundoEndereco);
+
+		String jsonBody = mapper.writeValueAsString(cliente);
+
+		ResultActions resultado = mockMvc.perform(post("/v1/clientes/").content(jsonBody)
+				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON));
+		
+		ClienteVO clienteDevolvido = mapper.readValue(resultado.andReturn().getResponse().getContentAsString(),
+				ClienteVO.class);
+
+		resultado.andExpect(status().isCreated());
+		
+		Iterator<EnderecoVO> iter = clienteDevolvido.getEnderecos().iterator();
+		
+		ResultActions resultadoDelete = mockMvc.perform(MockMvcRequestBuilders.delete(URI_DELETA, clienteDevolvido.getId(), iter.next().getId()));
+				
+		resultadoDelete.andExpect(status().isNoContent());
+	}
+	
+	@Test
+	@DisplayName("Deleta endereco de cliente com apenas um endereço")
+	public void test_deletaEndereco_retorna_retorno_BadRequestException() throws Exception {
+
+		ClienteVO cliente = new ClienteVO();
+
+		cliente.setNome("carlos");
+		cliente.setCpf("978.043.320-17");
+		cliente.setDtCriacao(LocalDateTime.now());
+		cliente.setDtNascimento(LocalDate.now().minus(18, ChronoUnit.YEARS));
+		cliente.setEmail("mm@gmail.com");
+		cliente.setTelefone("11999999999");
+		cliente.setTipo(TipoClienteEnum.PF);
+
+		EnderecoVO endereco = new EnderecoVO();
+
+		endereco.setLogradouro("av paulista");
+		endereco.setNumero("500");
+		endereco.setComplemento("masp");
+		endereco.setBairro("Bela Vista");
+		endereco.setCidade("São Paulo");
+		endereco.setEstado("SP");
+		endereco.setCep("01311-000");
+		endereco.setTipo(TipoEnderecoEnum.RESIDENCIA);
+
+		cliente.addEndereco(endereco);
+
+		String jsonBody = mapper.writeValueAsString(cliente);
+
+		ResultActions resultado = mockMvc.perform(post("/v1/clientes/").content(jsonBody)
+				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON));
+		
+		ClienteVO clienteDevolvido = mapper.readValue(resultado.andReturn().getResponse().getContentAsString(),
+				ClienteVO.class);
+
+		resultado.andExpect(status().isCreated());
+		
+		Iterator<EnderecoVO> iter = clienteDevolvido.getEnderecos().iterator();
+		
+		ResultActions resultadoDelete = mockMvc.perform(MockMvcRequestBuilders.delete(URI_DELETA, clienteDevolvido.getId(), iter.next().getId()));
+				
+		resultadoDelete.andExpect(status().isBadRequest());
+	}
+	
+	@Test
+	@DisplayName("Deleta endereco inexistente")
+	public void test_deletaEndereco_retorna_retorno_NotFoundException() throws Exception {
+
+		ClienteVO cliente = new ClienteVO();
+
+		cliente.setNome("carlos");
+		cliente.setCpf("978.043.320-17");
+		cliente.setDtCriacao(LocalDateTime.now());
+		cliente.setDtNascimento(LocalDate.now().minus(18, ChronoUnit.YEARS));
+		cliente.setEmail("mm@gmail.com");
+		cliente.setTelefone("11999999999");
+		cliente.setTipo(TipoClienteEnum.PF);
+
+		EnderecoVO endereco = new EnderecoVO();
+
+		endereco.setLogradouro("av paulista");
+		endereco.setNumero("500");
+		endereco.setComplemento("masp");
+		endereco.setBairro("Bela Vista");
+		endereco.setCidade("São Paulo");
+		endereco.setEstado("SP");
+		endereco.setCep("01311-000");
+		endereco.setTipo(TipoEnderecoEnum.RESIDENCIA);
+
+		cliente.addEndereco(endereco);
+		
+		EnderecoVO segundoEndereco = new EnderecoVO();
+
+		segundoEndereco.setLogradouro("Av. Doutor Rubens Filho");
+		segundoEndereco.setNumero("1506");
+		segundoEndereco.setComplemento("masp");
+		segundoEndereco.setBairro("Bela Vista");
+		segundoEndereco.setCidade("São Paulo");
+		segundoEndereco.setEstado("SP");
+		segundoEndereco.setCep("01311-000");
+		segundoEndereco.setTipo(TipoEnderecoEnum.COBRANCA);
+		
+		cliente.addEndereco(segundoEndereco);
+
+		String jsonBody = mapper.writeValueAsString(cliente);
+
+		ResultActions resultado = mockMvc.perform(post("/v1/clientes/").content(jsonBody)
+				.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON));
+		
+		ClienteVO clienteDevolvido = mapper.readValue(resultado.andReturn().getResponse().getContentAsString(),
+				ClienteVO.class);
+
+		resultado.andExpect(status().isCreated());
+		
+		ResultActions resultadoDelete = mockMvc.perform(MockMvcRequestBuilders.delete(URI_DELETA, clienteDevolvido.getId(), 3));
+				
+		resultadoDelete.andExpect(status().isNotFound());
 	}
 }

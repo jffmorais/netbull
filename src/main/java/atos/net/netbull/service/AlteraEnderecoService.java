@@ -24,7 +24,6 @@ public class AlteraEnderecoService {
 	private Validator validator;
 	private ClienteRepository clienteRepo;
 	private EnderecoRepository enderecoRepo;
-	private boolean enderecoExiste = false;
 
 	public AlteraEnderecoService(Validator validator, ClienteRepository clienteRepo, EnderecoRepository enderecoRepo) {
 		super();
@@ -36,18 +35,22 @@ public class AlteraEnderecoService {
 	public EnderecoVO persistir(EnderecoVO vo) {
 		Set<ConstraintViolation<EnderecoVO>> validateMessages = this.validator.validate(vo, EnderecoInfo.class);
 
+		boolean enderecoExiste = false;
+		
 		if (!validateMessages.isEmpty()) {
 			throw new ConstraintViolationException("Endereco inválido", validateMessages);
 		}
 
 		Optional<ClienteEntity> clienteExistente = this.clienteRepo.findById(vo.getClienteId());
 		if (clienteExistente.isPresent()) {
-			clienteExistente.get().getEnderecos().forEach(item -> {
-				if (item.getId().getNumeroEndereco() == vo.getId()) {
-					this.enderecoExiste = true;
+			
+			for(EnderecoEntity end : clienteExistente.get().getEnderecos()) {
+				if (end.getId().getNumeroEndereco() == vo.getId()) {
+					enderecoExiste = true;
 				}
-			});
-			if (this.enderecoExiste) {
+			}
+			
+			if (enderecoExiste) {
 				EnderecoEntity endEntity = new EnderecoFactory(vo).toEntity();
 				this.enderecoRepo.save(endEntity);
 			} else {

@@ -3,6 +3,8 @@ package atos.net.netbull.controller;
 import java.net.URI;
 
 import javax.validation.ConstraintViolationException;
+import javax.ws.rs.BadRequestException;
+import javax.ws.rs.NotFoundException;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,14 +62,27 @@ public class EnderecoController {
 		vo.setId(enderecoId);
 		vo.setClienteId(clienteId);
 
-		EnderecoVO endAlterado = this.alteraService.persistir(vo);
-
+		EnderecoVO endAlterado = null;
+		
+		try {
+			endAlterado = this.alteraService.persistir(vo);
+		}catch (NotFoundException e) {
+			return ResponseEntity.notFound().build();
+		}
+		
 		return ResponseEntity.status(HttpStatus.CREATED).body(endAlterado);
 	}
 
 	@DeleteMapping(value = "/remover/{clienteId}/{enderecoId}")
 	public ResponseEntity<Void> delete(@PathVariable Long clienteId, @PathVariable Integer enderecoId) {
-		deletaService.excluiEndereco(clienteId, enderecoId);
+		try {
+			deletaService.excluiEndereco(clienteId, enderecoId);
+		}catch (BadRequestException e) {
+			return ResponseEntity.badRequest().build();
+		}catch (NotFoundException e) {
+			return ResponseEntity.notFound().build();
+		}
+		
 		return ResponseEntity.noContent().build();
 	}
 }
