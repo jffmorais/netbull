@@ -47,7 +47,7 @@ public class ClienteController {
 	
 	@PostMapping
 	@Operation(description = "Cria um cliente")
-	public ResponseEntity<ClienteVO> insert( @RequestBody  ClienteVO vo){
+	public ResponseEntity<ClienteVO> insert(@RequestBody ClienteVO vo){
 		
 		vo = service.persistir(vo);
 		

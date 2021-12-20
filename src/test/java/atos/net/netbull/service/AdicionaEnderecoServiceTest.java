@@ -11,7 +11,9 @@ import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolation;
@@ -39,7 +41,7 @@ import atos.net.netbull.repository.EnderecoRepository;
 
 @ExtendWith(MockitoExtension.class)
 @TestInstance(Lifecycle.PER_CLASS)
-class AdicionaEnderecoServiceTest {
+public class AdicionaEnderecoServiceTest {
 
 	private Validator validator;
 	private AdicionaEnderecoService addEnderecoServ;
@@ -97,20 +99,22 @@ class AdicionaEnderecoServiceTest {
 		assertNotNull(addEnderecoServ);
 
 		EnderecoVO endereco = new EnderecoVO();
+		endereco.setClienteId(1l);
 		endereco.setLogradouro("Rua Genérica");
 		endereco.setNumero("1526");
 		endereco.setBairro("Jardim Genérico");
 		endereco.setCidade("Cidade Genérica");
 		endereco.setEstado("SP");
 		endereco.setCep("1525301288");
+		endereco.setTipo(TipoEnderecoEnum.RESIDENCIA);
+		
+		var assertThrows = assertThrows(BadRequestException.class, () -> addEnderecoServ.persistir(endereco));
 
-		var assertThrows = assertThrows(ConstraintViolationException.class, () -> addEnderecoServ.persistir(endereco));
-
-		assertEquals(assertThrows.getMessage(), "Endereço inválido");
+		assertEquals(assertThrows.getMessage(), "O CEP informado não é válido");
 	}
 
 	@Test
-	@DisplayName("Testa se o cliente PF existe")
+	@DisplayName("Testa se o cliente existe")
 	void test_quando_ClientePfNaoExiste_LancaExcessao() {
 		assertNotNull(addEnderecoServ);
 
@@ -124,37 +128,13 @@ class AdicionaEnderecoServiceTest {
 		endereco.setCep("15253012");
 		endereco.setTipo(TipoEnderecoEnum.RESIDENCIA);
 
-		when(buscaCliente.porId(anyLong())).thenThrow(NotFoundException.class);
-
+		when(buscaCliente.porId(anyLong())).thenReturn(null);
+		
 		var assertThrows = assertThrows(NotFoundException.class, () -> addEnderecoServ.persistir(endereco));
 
 		then(enderecoRepo).should(times(0)).save(any());
 
-		assertNotNull(assertThrows);
-	}
-
-	@Test
-	@DisplayName("Testa se o cliente PJ existe")
-	void test_quando_ClientePjNaoExiste_LancaExcessao() {
-		assertNotNull(addEnderecoServ);
-
-		EnderecoVO endereco = new EnderecoVO();
-		endereco.setClienteId(3l);
-		endereco.setLogradouro("Rua Genérica");
-		endereco.setNumero("1526");
-		endereco.setBairro("Jardim Genérico");
-		endereco.setCidade("Cidade Genérica");
-		endereco.setEstado("SP");
-		endereco.setCep("15253012");
-		endereco.setTipo(TipoEnderecoEnum.RESIDENCIA);
-
-		when(buscaCliente.porId(anyLong())).thenThrow(NotFoundException.class);
-
-		var assertThrows = assertThrows(NotFoundException.class, () -> addEnderecoServ.persistir(endereco));
-
-		then(enderecoRepo).should(times(0)).save(any());
-
-		assertNotNull(assertThrows);
+		assertEquals(assertThrows.getMessage(), "O cliente não foi encontrado");
 	}
 
 	@Test
@@ -171,9 +151,11 @@ class AdicionaEnderecoServiceTest {
 		endereco.setEstado("SP");
 		endereco.setCep("15253012");
 		endereco.setTipo(TipoEnderecoEnum.RESIDENCIA);
+		
+		List<EnderecoVO> enderecoTreinado = new ArrayList<EnderecoVO>();
+		enderecoTreinado.add(new EnderecoVO(1, 1l));
 
-		ClienteVO clienteTreinado = new ClienteVO();
-		clienteTreinado.setId(1l);
+		ClienteVO clienteTreinado = new ClienteVO(1l, enderecoTreinado);
 
 		when(buscaCliente.porId(anyLong())).thenReturn(clienteTreinado);
 
@@ -183,5 +165,36 @@ class AdicionaEnderecoServiceTest {
 
 		assertNotNull(endCriado);
 
+	}
+	
+	@Test
+	@DisplayName("Testa quando a quantidade limite de endereços")
+	void test_quando_qtd_max_enderecos_atingido() {
+		assertNotNull(addEnderecoServ);
+
+		EnderecoVO endereco = new EnderecoVO();
+		endereco.setClienteId(1l);
+		endereco.setLogradouro("Rua Genérica");
+		endereco.setNumero("1526");
+		endereco.setBairro("Jardim Genérico");
+		endereco.setCidade("Cidade Genérica");
+		endereco.setEstado("SP");
+		endereco.setCep("15253012");
+		endereco.setTipo(TipoEnderecoEnum.RESIDENCIA);
+		
+		List<EnderecoVO> enderecoTreinado = new ArrayList<EnderecoVO>();
+		enderecoTreinado.add(new EnderecoVO(1, 1l));
+		enderecoTreinado.add(new EnderecoVO(2, 1l));
+		enderecoTreinado.add(new EnderecoVO(3, 1l));
+
+		ClienteVO clienteTreinado = new ClienteVO(1l, enderecoTreinado);
+
+		when(buscaCliente.porId(anyLong())).thenReturn(clienteTreinado);
+
+		var assertThrows = assertThrows(BadRequestException.class, () -> addEnderecoServ.persistir(endereco));
+		
+		then(buscaCliente).should(times(1)).porId(anyLong());
+		
+		assertEquals(assertThrows.getMessage(), "A quantidade máxima de endereços foi atingida");
 	}
 }

@@ -38,6 +38,7 @@ public class ClienteVO {
 	@JsonFormat(pattern="dd/MM/yyyy")
 	private LocalDate dtNascimento;
 	
+	@JsonFormat(pattern="dd/MM/yyyy HH:mm:ss")
 	private LocalDateTime dtCriacao;
 	
 	@NotNull(message = "Campo email não pode ser nulo", groups = {PessoaFisicaInfo.class, PessoaJuridicaInfo.class})
@@ -51,10 +52,22 @@ public class ClienteVO {
 	@Size(min = 1, max = 3, message = "Deve-se adicionar ao menos um e no máximo três endereços", groups = {PessoaFisicaInfo.class, PessoaJuridicaInfo.class})
 	@Valid
 	private List<EnderecoVO> enderecos;
-
 	
+	public ClienteVO() {
+		super();
+	}
 
-	
+	public ClienteVO(Long id) {
+		super();
+		this.id = id;
+	}
+
+	public ClienteVO(Long id, List<EnderecoVO> enderecos) {
+		super();
+		this.id = id;
+		this.enderecos = enderecos;
+	}
+
 	public Long getId() {
 		return id;
 	}

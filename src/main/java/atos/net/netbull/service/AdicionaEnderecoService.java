@@ -11,6 +11,7 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.BadRequestException;
+import javax.ws.rs.NotFoundException;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,7 +55,7 @@ public class AdicionaEnderecoService {
 		Optional<ClienteVO> cliente = Optional.ofNullable(this.buscaCliente.porId(endereco.getClienteId()));
 		
 		if(cliente.isEmpty()) {
-			throw new BadRequestException("O cliente não foi encontrado");
+			throw new NotFoundException("O cliente não foi encontrado");
 		}
 		
 		ArrayList<Integer> possibilidadesId = new ArrayList<Integer>(Arrays.asList(1,2,3));  

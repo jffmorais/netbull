@@ -6,40 +6,45 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class EnderecoVO {
-	
+
 	@NotNull(message = "Campo id não pode ser nulo", groups = EnderecoInfo.class)
 	private int id;
 
 	@NotNull(message = "Campo logradouro não pode ser nulo", groups = EnderecoInfo.class)
 	private String logradouro;
-	
 
 	@NotNull(message = "Campo numero não pode ser nulo", groups = EnderecoInfo.class)
-	private String numero;	
-	
+	private String numero;
+
 	private String complemento;
-	
 
 	@NotNull(message = "Campo bairro não pode ser nulo", groups = EnderecoInfo.class)
 	private String bairro;
-	
 
 	@NotNull(message = "Campo cidade não pode ser nulo", groups = EnderecoInfo.class)
 	private String cidade;
-	
 
 	@NotNull(message = "Campo estado não pode ser nulo", groups = EnderecoInfo.class)
 	private String estado;
-	
 
 	@NotNull(message = "Campo CEP não pode ser nulo", groups = EnderecoInfo.class)
 	private String cep;
-	
-	@NotNull(message="Tipo não pode ser nulo")
+
+	@NotNull(message = "Tipo não pode ser nulo")
 	private TipoEnderecoEnum tipo;
-	
+
 	@NotNull(message = "Campo id do cliente não pode ser nulo", groups = EnderecoInfo.class)
 	private Long clienteId;
+
+	public EnderecoVO() {
+		super();
+	}
+
+	public EnderecoVO(int id, Long clienteId) {
+		super();
+		this.id = id;
+		this.clienteId = clienteId;
+	}
 
 	public int getId() {
 		return id;
@@ -57,11 +62,9 @@ public class EnderecoVO {
 		this.logradouro = logradouro;
 	}
 
-
 	public String getNumero() {
 		return numero;
 	}
-
 
 	public void setNumero(String numero) {
 		this.numero = numero;
@@ -99,11 +102,9 @@ public class EnderecoVO {
 		this.estado = estado;
 	}
 
-
 	public String getCep() {
 		return cep;
 	}
-
 
 	public void setCep(String cep) {
 		this.cep = cep;
@@ -123,6 +124,6 @@ public class EnderecoVO {
 
 	public void setClienteId(Long clienteId) {
 		this.clienteId = clienteId;
-	} 
-	
+	}
+
 }
